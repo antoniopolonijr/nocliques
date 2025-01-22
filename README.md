@@ -1,44 +1,36 @@
-# NoCliques
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-**NoCliques** is a team generator app designed to create fair and balanced teams for casual matches, with a focus on soccer games ("peladas") commonly played in Brazil. The app ensures team fairness by analyzing players' skills and positions, eliminating biases and "cliques" (exclusive groups).
+## Getting Started
 
----
+First, run the development server:
 
-## Features
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
 
-- **Skill-Based Team Generation**: Uses skill levels (e.g., 'low', 'medium', 'high') to create balanced teams.
-- **Position Analysis**: Ensures each team has the right mix of positions for optimal gameplay.
-- **Fair and Transparent**: Randomized sorting eliminates the formation of "cliques."
-- **Simple Interface**: User-friendly design for quick and hassle-free team generation.
-- **Customizable Settings**: Adjust parameters such as team size, number of players, and more.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
----
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-## Usage
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-1. Input player names, skill levels, and positions.
-2. Set team size and preferences.
-3. Click **"Generate Teams"** to create balanced groups.
-4. Review and adjust as needed.
+## Learn More
 
----
+To learn more about Next.js, take a look at the following resources:
 
-## Tech Stack
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-- **Frontend**: React with Next.js
-- **Styling**: Tailwind CSS
-- **Backend**: Node.js with custom algorithms for balancing
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
----
+## Deploy on Vercel
 
-## Contact
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-For questions or feedback, contact:
-
-- **Developer**: Antonio Poloni ([antoniopolonijr@gmail.com](mailto:antoniopolonijr@gmail.com))
-- **GitHub**: [antoniopolonijr](https://github.com/antoniopolonijr)
-
----
-
-Enjoy fair and fun games with **NoCliques**!
-
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
