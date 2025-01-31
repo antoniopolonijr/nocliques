@@ -1,5 +1,5 @@
-import { TeamGeneratorInputCard } from "./components/TeamGeneratorInputCard";
-import { GeneratedTeamsCard } from "./components/GeneratedTeamsCard";
+import { TeamGenerator } from "./components/TeamGenerator";
+import { GeneratedTeamsList } from "./components/GeneratedTeamsList";
 
 export default function Home() {
   return (
@@ -10,8 +10,8 @@ export default function Home() {
         teams avoiding the famous "cliques".
       </p>
       <div className="flex flex-col gap-6 mt-8 items-center">
-        <TeamGeneratorInputCard />
-        <GeneratedTeamsCard />
+        <TeamGenerator />
+        <GeneratedTeamsList />
       </div>
     </main>
   );
