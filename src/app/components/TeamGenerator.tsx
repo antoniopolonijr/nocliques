@@ -10,10 +10,10 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-import { PlayerInputList } from "./PlayerInputList";
-import { TeamInputList } from "./TeamInputList";
+import { PlayersList } from "./PlayersList";
+import { TeamsList } from "./TeamsList";
 
-export function TeamGeneratorInputCard() {
+export function TeamGenerator() {
   return (
     <section aria-labelledby="team-generator-input-card">
       <Card>
@@ -24,8 +24,8 @@ export function TeamGeneratorInputCard() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <PlayerInputList />
-          <TeamInputList />
+          <PlayersList />
+          <TeamsList />
         </CardContent>
         <CardFooter className="flex flex-row justify-between items-center">
           <Button aria-label="Reset" type="button" variant="outline">
