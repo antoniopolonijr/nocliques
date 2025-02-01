@@ -18,7 +18,7 @@ export function PlayersList() {
       aria-labelledby="players-list-title"
       className="rounded-xl border border-zinc-200 bg-white text-zinc-950 shadow dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-50"
     >
-      <header className="flex flex-col gap-2 space-y-1.5 p-6">
+      <header className="flex flex-col gap-3 p-6">
         <h3
           id="players-list-title"
           className="font-semibold leading-none tracking-tight"
