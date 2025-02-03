@@ -19,19 +19,14 @@ export function PlayersList() {
       className="rounded-xl border border-zinc-200 bg-white text-zinc-950 shadow dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-50"
     >
       <header className="flex flex-col gap-3 p-6">
-        <h3
-          id="players-list-title"
-          className="font-semibold leading-none tracking-tight"
-        >
-          Players List
-        </h3>
-        <p className="text-sm text-zinc-500 dark:text-zinc-400">
-          Choose the number of players, then enter each player's name, position,
-          and skill level.
-        </p>
         <div className="flex flex-row justify-between items-center">
           <div className="flex flex-row gap-2 items-center">
-            <p>Number of Players</p>
+            <h3
+              id="players-list-title"
+              className="font-semibold leading-none tracking-tight"
+            >
+              Players
+            </h3>
             <Select name="numberOfPlayers" defaultValue="3">
               <SelectTrigger
                 className="w-16"
@@ -144,16 +139,12 @@ export function PlayersList() {
               </SelectContent>
             </Select>
           </div>
-          <Button
-            aria-label="Paste List of Players"
-            type="button"
-            variant="secondary"
-          >
-            Paste List of Players
+          <Button aria-label="Import Players" type="button" variant="secondary">
+            Import Players
           </Button>
         </div>
-        {/* This div is hidden intentionally to be shown later when needed */}
-        <div className="hidden grid w-full gap-1.5">
+        {/* This div is hidden intentionally to be shown later when Import Players button is clicked */}
+        <div className="hidden flex flex-col gap-2">
           <Label className="text-sm text-gray-600" htmlFor="import-players">
             Insert or paste a list of players. One player per line. Optionally,
             add position and skill separated by commas.
@@ -163,11 +154,25 @@ export function PlayersList() {
             rows={7}
             id="import-players"
           />
-          <Button type="submit" aria-label="Import Players">
-            Import Players
-          </Button>
+          <div className="flex flex-row gap-2 items-center justify-between">
+            <Button
+              type="button"
+              aria-label="Cancel Import Players"
+              variant="outline"
+            >
+              Cancel
+            </Button>
+            <Button type="button" aria-label="Confirm Import Players">
+              Confirm Import
+            </Button>
+          </div>
         </div>
+        <p className="text-sm text-zinc-500 dark:text-zinc-400">
+          Choose the number of players, then enter each player's name, position,
+          and skill level. Optionally, import a list of players.
+        </p>
       </header>
+
       <div className="flex flex-col gap-4 p-6 pt-0">
         <ul className="flex flex-col gap-1">
           <li className="flex flex-row gap-1 items-center">
@@ -367,7 +372,7 @@ export function PlayersList() {
             </SelectContent>
           </Select>
 
-          <Button variant="secondary" aria-label="Add Player" type="button">
+          <Button variant="default" aria-label="Add Player" type="button">
             Add Player
           </Button>
         </div>
