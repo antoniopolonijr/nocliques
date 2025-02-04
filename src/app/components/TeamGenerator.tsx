@@ -24,7 +24,10 @@ export function TeamGenerator() {
           teams avoiding the famous "cliques".
         </p>
       </header>
-      <section aria-labelledby="input-section" className="p-6 pt-0 space-y-6">
+      <section
+        aria-labelledby="input-section"
+        className="lg:flex lg:flex-row lg:gap-6 p-6 pt-0 space-y-6 lg:space-y-0"
+      >
         <PlayersList />
         <TeamsList />
       </section>
@@ -32,10 +35,10 @@ export function TeamGenerator() {
         <GeneratedTeamsList />
       </section>
       <footer className="flex flex-row justify-between items-center p-6 pt-0">
-        <Button aria-label="Reset" type="button" variant="outline">
+        <Button aria-label="Reset" type="button" variant="secondary">
           Reset
         </Button>
-        <Button aria-label="Generate Teams" type="submit">
+        <Button aria-label="Generate Teams" type="button">
           Generate Teams
         </Button>
       </footer>
