@@ -19,8 +19,8 @@ export function PlayersList() {
       className="rounded-xl border border-zinc-200 bg-white text-zinc-950 shadow dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-50"
     >
       <header className="flex flex-col gap-3 p-6">
-        <div className="flex flex-row justify-between items-center">
-          <div className="flex flex-row gap-2 items-center">
+        <div className="flex justify-between items-center">
+          <div className="flex gap-2 items-center">
             <h3
               id="players-list-title"
               className="font-semibold leading-none tracking-tight"
@@ -154,7 +154,7 @@ export function PlayersList() {
             rows={7}
             id="import-players"
           />
-          <div className="flex flex-row gap-2 items-center justify-between">
+          <div className="flex gap-2 items-center justify-between">
             <Button
               type="button"
               aria-label="Cancel Import Players"
@@ -175,7 +175,7 @@ export function PlayersList() {
 
       <div className="flex flex-col gap-4 p-6 pt-0">
         <ul className="flex flex-col gap-1">
-          <li className="flex flex-row gap-1 items-center">
+          <li className="flex gap-1 items-center">
             <div className="w-8 text-center p-1">1</div>
 
             <Input
@@ -226,7 +226,7 @@ export function PlayersList() {
               Delete
             </Button>
           </li>
-          <li className="flex flex-row gap-1 items-center">
+          <li className="flex gap-1 items-center">
             <div className="w-8 text-center p-1">2</div>
 
             <Input
@@ -277,7 +277,7 @@ export function PlayersList() {
               Delete
             </Button>
           </li>
-          <li className="flex flex-row gap-1 items-center">
+          <li className="flex gap-1 items-center">
             <div className="w-8 text-center p-1">3</div>
 
             <Input
@@ -331,7 +331,7 @@ export function PlayersList() {
         </ul>
       </div>
       <footer className="flex items-center p-6 pt-0 ">
-        <div className="flex flex-row gap-1 items-center w-full">
+        <div className="flex gap-1 items-center w-full">
           <Input
             className="flex-1"
             type="text"
