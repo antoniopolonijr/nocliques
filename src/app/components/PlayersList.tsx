@@ -12,6 +12,10 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 
+/**
+ * PlayersList component
+ * This component allows users to input and manage a list of players.
+ */
 export function PlayersList() {
   return (
     <section
