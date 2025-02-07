@@ -33,7 +33,7 @@ export function TeamGenerator() {
       {/* Input section for players and teams */}
       <section
         aria-labelledby="input-section"
-        className="lg:flex lg:flex-row lg:gap-6 p-6 pt-0 space-y-6 lg:space-y-0"
+        className="lg:flex lg:lg:gap-6 p-6 pt-0 space-y-6 lg:space-y-0"
       >
         <PlayersList />
         <TeamsList />
@@ -43,7 +43,7 @@ export function TeamGenerator() {
         <GeneratedTeamsList />
       </section>
       {/* Footer section with action buttons */}
-      <footer className="flex flex-row justify-between items-center p-6 pt-0">
+      <footer className="flex justify-between items-center p-6 pt-0">
         <Button aria-label="Reset" type="button" variant="secondary">
           Reset
         </Button>

@@ -13,8 +13,8 @@ export function GeneratedTeamsList() {
       className="rounded-xl border border-zinc-200 bg-white text-zinc-950 shadow dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-50"
     >
       <header className="flex flex-col gap-3 p-6">
-        <div className="flex flex-row items-center">
-          <div className="flex flex-row gap-2 items-center">
+        <div className="flex items-center">
+          <div className="flex gap-2 items-center">
             <h3
               id="generated-teams-list-title"
               className="font-semibold leading-none tracking-tight"
@@ -60,7 +60,7 @@ export function GeneratedTeamsList() {
         </section>
         <section
           aria-labelledby="generated-team-name-2"
-          className=" rounded-xl border border-zinc-200 bg-white text-zinc-950 shadow dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-50"
+          className="rounded-xl border border-zinc-200 bg-white text-zinc-950 shadow dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-50"
         >
           <div className="p-6">
             <h3
@@ -90,7 +90,7 @@ export function GeneratedTeamsList() {
         </section>
         <section
           aria-labelledby="generated-team-name-3"
-          className=" rounded-xl border border-zinc-200 bg-white text-zinc-950 shadow dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-50"
+          className="rounded-xl border border-zinc-200 bg-white text-zinc-950 shadow dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-50"
         >
           <div className="p-6">
             <h3
@@ -119,7 +119,7 @@ export function GeneratedTeamsList() {
           </ul>
         </section>
       </div>
-      <footer className="flex flex-row justify-end gap-1 items-center p-6 pt-0">
+      <footer className="flex justify-end gap-1 items-center p-6 pt-0">
         <Button variant="default" aria-label="Copy" type="button">
           Copy
         </Button>
