@@ -86,7 +86,7 @@ export function GeneratedTeamsList() {
         </section>
         <section
           aria-labelledby="generated-team-name-3"
-          className=" rounded-xl border border-zinc-200 bg-white text-zinc-950 shadow dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-50"
+          className="rounded-xl border border-zinc-200 bg-white text-zinc-950 shadow dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-50"
         >
           <div className="p-6">
             <h3
