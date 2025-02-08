@@ -1,8 +1,10 @@
-import * as React from "react";
+"use client";
 
+import * as React from "react";
+import { useState } from "react";
+import { PlayerItem } from "./PlayerItem";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -12,11 +14,68 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 
-/**
- * PlayersList component
- * This component allows users to input and manage a list of players.
- */
+// Define the Player type to ensure type safety
+interface Player {
+  name: string; // Player name
+  position: "" | "goalkeeper" | "defender" | "midfielder" | "forward"; // Player position
+  skill: "" | "low" | "medium" | "high"; // Player skill level
+}
+
+// Initial player state to avoid redundant object creation
+const INITIAL_PLAYER_STATE: Player = {
+  name: "",
+  position: "",
+  skill: "",
+};
+// Default list of players with 14 empty entries
+const INITIAL_PLAYERS: Player[] = Array(14).fill(INITIAL_PLAYER_STATE);
+
 export function PlayersList() {
+  // State for storing the list of players
+  const [players, setPlayers] = useState<Player[]>(INITIAL_PLAYERS);
+  // State for managing new player input
+  const [newPlayer, setNewPlayer] = useState<Player>(INITIAL_PLAYER_STATE);
+
+  /**
+   * Updates an existing player's details.
+   * @param index - The index of the player to update.
+   * @param updatedFields - The fields to update.
+   */
+  const handleUpdatePlayer = (
+    index: number,
+    updatedFields: Partial<Player>
+  ) => {
+    setPlayers((prevPlayers) =>
+      prevPlayers.map((player, i) =>
+        i === index ? { ...player, ...updatedFields } : player
+      )
+    );
+  };
+
+  /**
+   * Updates the new player input fields.
+   * @param updatedFields - The fields to update.
+   */
+  const handleUpdateNewPlayer = (updatedFields: Partial<Player>) => {
+    setNewPlayer((prev) => ({ ...prev, ...updatedFields }));
+  };
+
+  /**
+   * Deletes a player from the list.
+   * @param index - The index of the player to remove.
+   */
+  const handleDelete = (index: number) => {
+    setPlayers((prevPlayers) => prevPlayers.filter((_, i) => i !== index));
+  };
+
+  /**
+   * Adds a new player to the list and resets the input fields.
+   */
+  const handleAddPlayer = () => {
+    setPlayers((prevPlayers) => [...prevPlayers, newPlayer]);
+    setNewPlayer(INITIAL_PLAYER_STATE);
+  };
+
   return (
     <section
       aria-labelledby="players-list-title"
@@ -31,7 +90,8 @@ export function PlayersList() {
             >
               Players
             </h3>
-            <Select name="numberOfPlayers" defaultValue="3">
+            {/* Dropdown to select the number of players */}
+            <Select name="numberOfPlayers" value={players.length.toString()}>
               <SelectTrigger
                 className="w-16"
                 aria-label="Number of Players"
@@ -83,208 +143,30 @@ export function PlayersList() {
       </header>
 
       <div className="flex flex-col gap-4 p-6 pt-0">
-        <ul className="flex flex-col gap-1">
-          <li className="flex gap-1 items-center">
-            <div className="w-8 text-center p-1">1</div>
-
-            <Input
-              className="flex-1"
-              type="text"
-              placeholder="Player 1"
-              aria-label="Player Name 1"
-              name="playerName1"
-              id="playerName1"
-              required
+        <ul className="flex flex-col gap-2">
+          {players.map((player, index) => (
+            <PlayerItem
+              wrapper="li"
+              key={index}
+              displayNumber={index + 1}
+              {...player}
+              onDelete={() => handleDelete(index)}
+              onUpdate={(updatedFields) =>
+                handleUpdatePlayer(index, updatedFields)
+              }
             />
-
-            <Select name="playerPosition" required>
-              <SelectTrigger
-                className="w-32"
-                aria-label="Player Position 1"
-                id="playerPosition1"
-              >
-                <SelectValue placeholder="Position" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="goalkeeper">Goalkeeper</SelectItem>
-                <SelectItem value="defender">Defender</SelectItem>
-                <SelectItem value="midfielder">Midfielder</SelectItem>
-                <SelectItem value="forward">Forward</SelectItem>
-              </SelectContent>
-            </Select>
-            <Select name="playerSkill1" required>
-              <SelectTrigger
-                className="w-24"
-                aria-label="Player Skill 1"
-                id="playerSkill1"
-              >
-                <SelectValue placeholder="Skill" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="low">Low</SelectItem>
-                <SelectItem value="medium">Medium</SelectItem>
-                <SelectItem value="high">High</SelectItem>
-              </SelectContent>
-            </Select>
-
-            <Button
-              variant="destructive"
-              aria-label="Delete Player"
-              type="button"
-            >
-              Delete
-            </Button>
-          </li>
-          <li className="flex gap-1 items-center">
-            <div className="w-8 text-center p-1">2</div>
-
-            <Input
-              className="flex-1"
-              type="text"
-              placeholder="Player 2"
-              aria-label="Player Name 2"
-              name="playerName2"
-              id="playerName2"
-              required
-            />
-
-            <Select name="playerPosition2" required>
-              <SelectTrigger
-                className="w-32"
-                aria-label="Player Position 2"
-                id="playerPosition2"
-              >
-                <SelectValue placeholder="Position" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="goalkeeper">Goalkeeper</SelectItem>
-                <SelectItem value="defender">Defender</SelectItem>
-                <SelectItem value="midfielder">Midfielder</SelectItem>
-                <SelectItem value="forward">Forward</SelectItem>
-              </SelectContent>
-            </Select>
-            <Select name="playerSkill2" required>
-              <SelectTrigger
-                className="w-24"
-                aria-label="Player Skill 2"
-                id="playerSkill2"
-              >
-                <SelectValue placeholder="Skill" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="low">Low</SelectItem>
-                <SelectItem value="medium">Medium</SelectItem>
-                <SelectItem value="high">High</SelectItem>
-              </SelectContent>
-            </Select>
-
-            <Button
-              variant="destructive"
-              aria-label="Delete Player"
-              type="button"
-            >
-              Delete
-            </Button>
-          </li>
-          <li className="flex gap-1 items-center">
-            <div className="w-8 text-center p-1">3</div>
-
-            <Input
-              className="flex-1"
-              type="text"
-              placeholder="Player 3"
-              aria-label="Player Name 3"
-              name="playerName3"
-              id="playerName3"
-              required
-            />
-
-            <Select name="playerPosition3" required>
-              <SelectTrigger
-                className="w-32"
-                aria-label="Player Position 3"
-                id="playerPosition3"
-              >
-                <SelectValue placeholder="Position" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="goalkeeper">Goalkeeper</SelectItem>
-                <SelectItem value="defender">Defender</SelectItem>
-                <SelectItem value="midfielder">Midfielder</SelectItem>
-                <SelectItem value="forward">Forward</SelectItem>
-              </SelectContent>
-            </Select>
-            <Select name="playerSkill3" required>
-              <SelectTrigger
-                className="w-24"
-                aria-label="Player Skill 3"
-                id="playerSkill3"
-              >
-                <SelectValue placeholder="Skill" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="low">Low</SelectItem>
-                <SelectItem value="medium">Medium</SelectItem>
-                <SelectItem value="high">High</SelectItem>
-              </SelectContent>
-            </Select>
-
-            <Button
-              variant="destructive"
-              aria-label="Delete Player"
-              type="button"
-            >
-              Delete
-            </Button>
-          </li>
+          ))}
         </ul>
       </div>
-      <footer className="flex items-center p-6 pt-0 ">
-        <div className="flex gap-1 items-center w-full">
-          <Input
-            className="flex-1"
-            type="text"
-            placeholder="Player Name"
-            aria-label="Player Name"
-            name="playerName"
-            id="playerName"
-            required
-          />
 
-          <Select name="playerPosition" required>
-            <SelectTrigger
-              className="w-32"
-              aria-label="Player Position"
-              id="playerPosition"
-            >
-              <SelectValue placeholder="Position" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="goalkeeper">Goalkeeper</SelectItem>
-              <SelectItem value="defender">Defender</SelectItem>
-              <SelectItem value="midfielder">Midfielder</SelectItem>
-              <SelectItem value="forward">Forward</SelectItem>
-            </SelectContent>
-          </Select>
-          <Select name="playerSkill" required>
-            <SelectTrigger
-              className="w-24"
-              aria-label="Player Skill"
-              id="playerSkill"
-            >
-              <SelectValue placeholder="Skill" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="low">Low</SelectItem>
-              <SelectItem value="medium">Medium</SelectItem>
-              <SelectItem value="high">High</SelectItem>
-            </SelectContent>
-          </Select>
-
-          <Button variant="default" aria-label="Add Player" type="button">
-            Add Player
-          </Button>
-        </div>
+      <footer className="flex gap-1 items-center w-full p-6 pt-0">
+        {/* Input fields for adding a new player */}
+        <PlayerItem
+          wrapper="div"
+          {...newPlayer}
+          onUpdate={handleUpdateNewPlayer}
+          onAdd={handleAddPlayer}
+        />
       </footer>
     </section>
   );
