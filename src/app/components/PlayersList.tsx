@@ -76,6 +76,33 @@ export function PlayersList() {
     setNewPlayer(INITIAL_PLAYER_STATE);
   };
 
+  /**
+   * Updates the list of players when the dropdown value changes.
+   * @param newLength - The new number of players selected.
+   * @param setPlayers - The state setter function to update the players array.
+   */
+  const handleUpdateNumberOfPlayers = (
+    newLength: number,
+    setPlayers: React.Dispatch<React.SetStateAction<Player[]>>
+  ): void => {
+    setPlayers((prevPlayers) => {
+      // Create a shallow copy of the previous players array to maintain immutability
+      const updatedPlayers = [...prevPlayers];
+
+      if (newLength > updatedPlayers.length) {
+        // Add new player objects if the selected number is greater than the current count
+        for (let i = updatedPlayers.length; i < newLength; i++) {
+          updatedPlayers.push({ name: "", position: "", skill: "" });
+        }
+      } else {
+        // Trim the array if the selected number is smaller
+        updatedPlayers.length = newLength;
+      }
+
+      return updatedPlayers;
+    });
+  };
+
   return (
     <section
       aria-labelledby="players-list-title"
@@ -91,7 +118,13 @@ export function PlayersList() {
               Players
             </h3>
             {/* Dropdown to select the number of players */}
-            <Select name="numberOfPlayers" value={players.length.toString()}>
+            <Select
+              name="numberOfPlayers"
+              value={players.length.toString()}
+              onValueChange={(value) =>
+                handleUpdateNumberOfPlayers(parseInt(value, 10), setPlayers)
+              }
+            >
               <SelectTrigger
                 className="w-16"
                 aria-label="Number of Players"
@@ -100,6 +133,7 @@ export function PlayersList() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
+                {/* Generate selectable numbers from 1 to 100 dynamically */}
                 {Array.from({ length: 100 }, (_, i) => (
                   <SelectItem key={i + 1} value={(i + 1).toString()}>
                     {i + 1}
