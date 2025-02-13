@@ -2,9 +2,9 @@
 
 import * as React from "react";
 import { useState } from "react";
-import { PlayerItem } from "./PlayerItem";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -13,31 +13,41 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 // Define the Player type to ensure type safety
 interface Player {
-  name: string; // Player name
-  position: "" | "goalkeeper" | "defender" | "midfielder" | "forward"; // Player position
-  skill: "" | "low" | "medium" | "high"; // Player skill level
+  name: string; // Player's name
+  position: "any" | "goalkeeper" | "defender" | "midfielder" | "forward"; // Player's position
+  skill: "low" | "medium" | "high"; // Player's skill level
 }
 
-// Initial player state to avoid redundant object creation
-const INITIAL_PLAYER_STATE: Player = {
+// Function to create a new player with default values (avoids shared object references)
+const createDefaultPlayer = (): Player => ({
   name: "",
-  position: "",
-  skill: "",
-};
-// Default list of players with 14 empty entries
-const INITIAL_PLAYERS: Player[] = Array(14).fill(INITIAL_PLAYER_STATE);
+  position: "any",
+  skill: "medium",
+});
+
+// Default list of players
+const INITIAL_PLAYERS: Player[] = Array.from(
+  { length: 16 },
+  createDefaultPlayer
+);
 
 export function PlayersList() {
   // State for storing the list of players
   const [players, setPlayers] = useState<Player[]>(INITIAL_PLAYERS);
-  // State for managing new player input
-  const [newPlayer, setNewPlayer] = useState<Player>(INITIAL_PLAYER_STATE);
 
   /**
-   * Updates an existing player's details.
+   * Update a specific player in the list with new values
    * @param index - The index of the player to update.
    * @param updatedFields - The fields to update.
    */
@@ -53,14 +63,6 @@ export function PlayersList() {
   };
 
   /**
-   * Updates the new player input fields.
-   * @param updatedFields - The fields to update.
-   */
-  const handleUpdateNewPlayer = (updatedFields: Partial<Player>) => {
-    setNewPlayer((prev) => ({ ...prev, ...updatedFields }));
-  };
-
-  /**
    * Deletes a player from the list.
    * @param index - The index of the player to remove.
    */
@@ -68,38 +70,34 @@ export function PlayersList() {
     setPlayers((prevPlayers) => prevPlayers.filter((_, i) => i !== index));
   };
 
-  /**
-   * Adds a new player to the list and resets the input fields.
-   */
+  // Adds a new player to the list.
   const handleAddPlayer = () => {
-    setPlayers((prevPlayers) => [...prevPlayers, newPlayer]);
-    setNewPlayer(INITIAL_PLAYER_STATE);
+    setPlayers((prevPlayers) => [...prevPlayers, createDefaultPlayer()]);
+  };
+
+  // Resets all players to default values
+  const handleResetPlayers = (): void => {
+    setPlayers((prevPlayers) => prevPlayers.map(() => createDefaultPlayer()));
   };
 
   /**
    * Updates the list of players when the dropdown value changes.
    * @param newLength - The new number of players selected.
-   * @param setPlayers - The state setter function to update the players array.
    */
-  const handleUpdateNumberOfPlayers = (
-    newLength: number,
-    setPlayers: React.Dispatch<React.SetStateAction<Player[]>>
-  ): void => {
+  const handleUpdateNumberOfPlayers = (newLength: number) => {
     setPlayers((prevPlayers) => {
-      // Create a shallow copy of the previous players array to maintain immutability
-      const updatedPlayers = [...prevPlayers];
-
-      if (newLength > updatedPlayers.length) {
+      if (newLength > prevPlayers.length) {
         // Add new player objects if the selected number is greater than the current count
-        for (let i = updatedPlayers.length; i < newLength; i++) {
-          updatedPlayers.push({ name: "", position: "", skill: "" });
-        }
-      } else {
-        // Trim the array if the selected number is smaller
-        updatedPlayers.length = newLength;
+        return [
+          ...prevPlayers,
+          ...Array.from(
+            { length: newLength - prevPlayers.length },
+            createDefaultPlayer
+          ),
+        ];
       }
-
-      return updatedPlayers;
+      // Else trim the array if the selected number is smaller
+      return prevPlayers.slice(0, newLength);
     });
   };
 
@@ -108,7 +106,7 @@ export function PlayersList() {
       aria-labelledby="players-list-title"
       className="rounded-xl border border-zinc-200 bg-white text-zinc-950 shadow dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-50"
     >
-      <header className="flex flex-col gap-3 p-6">
+      <header className="flex flex-col gap-4 p-6">
         <div className="flex justify-between items-center">
           <div className="flex gap-2 items-center">
             <h3
@@ -119,23 +117,27 @@ export function PlayersList() {
             </h3>
             {/* Dropdown to select the number of players */}
             <Select
-              name="numberOfPlayers"
+              name="number-of-players"
               value={players.length.toString()}
               onValueChange={(value) =>
-                handleUpdateNumberOfPlayers(parseInt(value, 10), setPlayers)
+                handleUpdateNumberOfPlayers(parseInt(value, 10))
               }
             >
               <SelectTrigger
                 className="w-16"
                 aria-label="Number of Players"
-                id="numberOfPlayers"
+                id="number-of-players"
               >
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
                 {/* Generate selectable numbers from 1 to 100 dynamically */}
                 {Array.from({ length: 100 }, (_, i) => (
-                  <SelectItem key={i + 1} value={(i + 1).toString()}>
+                  <SelectItem
+                    key={i + 1}
+                    value={(i + 1).toString()}
+                    aria-label={`Select ${i + 1} players`}
+                  >
                     {i + 1}
                   </SelectItem>
                 ))}
@@ -156,6 +158,7 @@ export function PlayersList() {
             placeholder="e.g., Ronaldo, Forward, High"
             rows={7}
             id="import-players"
+            name="import-players"
           />
           <div className="flex gap-2 items-center justify-between">
             <Button
@@ -177,31 +180,184 @@ export function PlayersList() {
       </header>
 
       <div className="flex flex-col gap-4 p-6 pt-0">
-        <ul className="flex flex-col gap-2">
-          {players.map((player, index) => (
-            <PlayerItem
-              wrapper="li"
-              key={index}
-              displayNumber={index + 1}
-              {...player}
-              onDelete={() => handleDelete(index)}
-              onUpdate={(updatedFields) =>
-                handleUpdatePlayer(index, updatedFields)
-              }
-            />
-          ))}
-        </ul>
-      </div>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Name</TableHead>
+              <TableHead>Position</TableHead>
+              <TableHead>Skill</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {players.map((player, index) => (
+              <TableRow key={index} className="">
+                {/* Editable input for player name */}
+                <TableCell className="px-0.5">
+                  <Input
+                    className="truncate"
+                    type="text"
+                    value={player.name}
+                    onChange={(e) =>
+                      handleUpdatePlayer(index, { name: e.target.value })
+                    }
+                    aria-label={`Player Name ${index + 1}`}
+                    placeholder={`Player ${index + 1}`}
+                    id={`player-name-${index + 1}`}
+                    name={`player-name-${index + 1}`}
+                    required
+                  />
+                </TableCell>
 
-      <footer className="flex gap-1 items-center w-full p-6 pt-0">
-        {/* Input fields for adding a new player */}
-        <PlayerItem
-          wrapper="div"
-          {...newPlayer}
-          onUpdate={handleUpdateNewPlayer}
-          onAdd={handleAddPlayer}
-        />
-      </footer>
+                {/* Select dropdown for player position */}
+                <TableCell className="px-0.5">
+                  <Select
+                    required
+                    name={`player-position-${index + 1}`}
+                    value={player.position}
+                    onValueChange={(value) =>
+                      handleUpdatePlayer(index, {
+                        position: value as Player["position"],
+                      })
+                    }
+                  >
+                    <SelectTrigger
+                      id={`player-position-${index + 1}`}
+                      aria-label={`Player Position ${index + 1}`}
+                    >
+                      <SelectValue placeholder="Position" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem
+                        value="any"
+                        aria-label={`Select Any position`}
+                      >
+                        Any
+                      </SelectItem>
+                      <SelectItem
+                        value="goalkeeper"
+                        aria-label={`Select Goalkeeper position`}
+                      >
+                        Goalkeeper
+                      </SelectItem>
+                      <SelectItem
+                        value="defender"
+                        aria-label={`Select Defender position`}
+                      >
+                        Defender
+                      </SelectItem>
+                      <SelectItem
+                        value="midfielder"
+                        aria-label={`Select Midfielder position`}
+                      >
+                        Midfielder
+                      </SelectItem>
+                      <SelectItem
+                        value="forward"
+                        aria-label={`Select Forward position`}
+                      >
+                        Forward
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                </TableCell>
+
+                {/* Select dropdown for player skill level */}
+                <TableCell className="px-0.5">
+                  <Select
+                    required
+                    name={`player-skill-${index + 1}`}
+                    value={player.skill}
+                    onValueChange={(value) =>
+                      handleUpdatePlayer(index, {
+                        skill: value as Player["skill"],
+                      })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue
+                        placeholder="Skill"
+                        id={`player-skill-${index + 1}`}
+                        aria-label={`Player Skill ${index + 1}`}
+                      />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem
+                        value="low"
+                        aria-label={`Select Low position`}
+                      >
+                        Low
+                      </SelectItem>
+                      <SelectItem
+                        value="medium"
+                        aria-label={`Select Medium position`}
+                      >
+                        Medium
+                      </SelectItem>
+                      <SelectItem
+                        value="high"
+                        aria-label={`Select High position`}
+                      >
+                        High
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                </TableCell>
+
+                {/* Delete Player button */}
+                <TableCell className="px-0.5 text-right">
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    onClick={() => handleDelete(index)}
+                    aria-label="Delete Player"
+                  >
+                    Delete
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+
+          <tfoot>
+            <TableRow className="border-t border-b-0 hover:bg-transparent">
+              {/* Clear Players Data button */}
+              <TableCell
+                colSpan={2}
+                className={
+                  players.length <= 0 ? "hidden" : "text-left pt-6 px-0.5"
+                }
+              >
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={handleResetPlayers}
+                  aria-label="Reset Players Data"
+                >
+                  Reset
+                </Button>
+              </TableCell>
+              {/* Add Player button */}
+              <TableCell
+                colSpan={players.length <= 0 ? 4 : 2}
+                className={
+                  players.length <= 0
+                    ? "text-center pt-6 px-0.5"
+                    : "text-right pt-6 px-0.5"
+                }
+              >
+                <Button
+                  type="button"
+                  onClick={handleAddPlayer}
+                  aria-label="Add Player"
+                >
+                  Add Player
+                </Button>
+              </TableCell>
+            </TableRow>
+          </tfoot>
+        </Table>
+      </div>
     </section>
   );
 }
