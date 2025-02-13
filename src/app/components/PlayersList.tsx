@@ -25,15 +25,15 @@ import {
 // Define the Player type to ensure type safety
 interface Player {
   name: string; // Player's name
-  position: "any" | "goalkeeper" | "defender" | "midfielder" | "forward"; // Player's position
-  skill: "low" | "medium" | "high"; // Player's skill level
+  position: "Any" | "Goalkeeper" | "Defender" | "Midfielder" | "Forward"; // Player's position
+  skill: "Low" | "Medium" | "High"; // Player's skill level
 }
 
 // Function to create a new player with default values (avoids shared object references)
 const createDefaultPlayer = (): Player => ({
   name: "",
-  position: "any",
-  skill: "medium",
+  position: "Any",
+  skill: "Medium",
 });
 
 // Default list of players
@@ -42,6 +42,10 @@ const INITIAL_PLAYERS: Player[] = Array.from(
   createDefaultPlayer
 );
 
+/**
+ * PlayersList component
+ * This component alLows users to input and manage a list of players.
+ */
 export function PlayersList() {
   // State for storing the list of players
   const [players, setPlayers] = useState<Player[]>(INITIAL_PLAYERS);
@@ -101,6 +105,25 @@ export function PlayersList() {
     });
   };
 
+  // Maps abbreviations
+  const abbreviations: Record<string, string> = {
+    // Positions
+    Goalkeeper: "GK",
+    Defender: "DF",
+    Midfielder: "MF",
+    Forward: "FW",
+
+    // Skill Levels
+    Low: "L",
+    Medium: "M",
+    High: "H",
+  };
+
+  // Function that returns the corresponding abbreviation or the original value if there is no abbreviation
+  function getAbbreviation(value: string): string {
+    return abbreviations[value] || value;
+  }
+
   return (
     <section
       aria-labelledby="players-list-title"
@@ -152,7 +175,7 @@ export function PlayersList() {
         <div className="hidden flex flex-col gap-2">
           <Label className="text-sm text-gray-600" htmlFor="import-players">
             Insert or paste a list of players. One player per line. Optionally,
-            add position and skill separated by commas.
+            add position and skill level separated by commas.
           </Label>
           <Textarea
             placeholder="e.g., Ronaldo, Forward, High"
@@ -186,7 +209,7 @@ export function PlayersList() {
               <TableHead>Name</TableHead>
               <TableHead>Position</TableHead>
               <TableHead>Skill</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
+              <TableHead className="text-right">{/* Actions */}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -225,35 +248,45 @@ export function PlayersList() {
                       id={`player-position-${index + 1}`}
                       aria-label={`Player Position ${index + 1}`}
                     >
-                      <SelectValue placeholder="Position" />
+                      <SelectValue placeholder="Position">
+                        <abbr
+                          title={player.position}
+                          className="sm:hidden no-underline"
+                        >
+                          {getAbbreviation(player.position)}
+                        </abbr>
+                        <span className="hidden sm:inline">
+                          {player.position}
+                        </span>
+                      </SelectValue>
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem
-                        value="any"
+                        value="Any"
                         aria-label={`Select Any position`}
                       >
                         Any
                       </SelectItem>
                       <SelectItem
-                        value="goalkeeper"
+                        value="Goalkeeper"
                         aria-label={`Select Goalkeeper position`}
                       >
                         Goalkeeper
                       </SelectItem>
                       <SelectItem
-                        value="defender"
+                        value="Defender"
                         aria-label={`Select Defender position`}
                       >
                         Defender
                       </SelectItem>
                       <SelectItem
-                        value="midfielder"
+                        value="Midfielder"
                         aria-label={`Select Midfielder position`}
                       >
                         Midfielder
                       </SelectItem>
                       <SelectItem
-                        value="forward"
+                        value="Forward"
                         aria-label={`Select Forward position`}
                       >
                         Forward
@@ -274,30 +307,31 @@ export function PlayersList() {
                       })
                     }
                   >
-                    <SelectTrigger>
-                      <SelectValue
-                        placeholder="Skill"
-                        id={`player-skill-${index + 1}`}
-                        aria-label={`Player Skill ${index + 1}`}
-                      />
+                    <SelectTrigger
+                      id={`player-skill-${index + 1}`}
+                      aria-label={`Player Skill ${index + 1}`}
+                    >
+                      <SelectValue placeholder="Skill">
+                        <abbr
+                          title={player.skill}
+                          className="sm:hidden no-underline"
+                        >
+                          {getAbbreviation(player.skill)}
+                        </abbr>
+                        <span className="hidden sm:inline">{player.skill}</span>
+                      </SelectValue>
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem
-                        value="low"
-                        aria-label={`Select Low position`}
-                      >
+                      <SelectItem value="Low" aria-label={`Select Low skill`}>
                         Low
                       </SelectItem>
                       <SelectItem
-                        value="medium"
-                        aria-label={`Select Medium position`}
+                        value="Medium"
+                        aria-label={`Select Medium skill`}
                       >
                         Medium
                       </SelectItem>
-                      <SelectItem
-                        value="high"
-                        aria-label={`Select High position`}
-                      >
+                      <SelectItem value="High" aria-label={`Select High skill`}>
                         High
                       </SelectItem>
                     </SelectContent>
@@ -312,7 +346,10 @@ export function PlayersList() {
                     onClick={() => handleDelete(index)}
                     aria-label="Delete Player"
                   >
-                    Delete
+                    <abbr
+                      title="Delete"
+                      className="no-underline sm:after:content-['Delete'] after:content-['X']"
+                    ></abbr>
                   </Button>
                 </TableCell>
               </TableRow>
