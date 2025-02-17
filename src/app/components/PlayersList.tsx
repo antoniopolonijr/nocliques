@@ -21,6 +21,17 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 // Define the Player type to ensure type safety
 interface Player {
@@ -29,14 +40,14 @@ interface Player {
   skill: "Low" | "Medium" | "High"; // Player's skill level
 }
 
-// Function to create a new player with default values (avoids shared object references)
+// Function to create a default player object (avoids shared object references)
 const createDefaultPlayer = (): Player => ({
   name: "",
   position: "Any",
   skill: "Medium",
 });
 
-// Default list of players
+// Initialize an array with a length of default player objects
 const INITIAL_PLAYERS: Player[] = Array.from(
   { length: 16 },
   createDefaultPlayer
@@ -47,8 +58,85 @@ const INITIAL_PLAYERS: Player[] = Array.from(
  * This component alLows users to input and manage a list of players.
  */
 export function PlayersList() {
-  // State for storing the list of players
+  // State to manage the list of players
   const [players, setPlayers] = useState<Player[]>(INITIAL_PLAYERS);
+
+  // State to control whether the import section is visible
+  const [isImporting, setIsImporting] = useState(false);
+
+  // State to hold the text input for importing players
+  const [importText, setImportText] = useState("");
+
+  // Toggles the import section visibility
+  const handleImportToggle = () => {
+    setIsImporting((prev) => !prev);
+  };
+
+  // Updates the import text as the user types
+  const handleImportChange = (event: React.ChangeEvent<HTMLTextAreaElement>) =>
+    setImportText(event.target.value);
+
+  // Mapping for positions: accepts full names and abbreviations (case-insensitive)
+  const positionsMap: Record<string, Player["position"]> = {
+    any: "Any",
+    goalkeeper: "Goalkeeper",
+    gk: "Goalkeeper",
+    defender: "Defender",
+    df: "Defender",
+    midfielder: "Midfielder",
+    mf: "Midfielder",
+    forward: "Forward",
+    fw: "Forward",
+  };
+
+  // Mapping for skills: accepts full names and abbreviations (case-insensitive)
+  const skillsMap: Record<string, Player["skill"]> = {
+    low: "Low",
+    l: "Low",
+    medium: "Medium",
+    m: "Medium",
+    high: "High",
+    h: "High",
+  };
+
+  // Parses the imported text and converts it into Player objects
+  const parseImportData = (data: string): Player[] => {
+    return data
+      .split("\n")
+      .map((line) => line.trim())
+      .filter((line) => line !== "") // Remove empty lines
+      .map((line) => {
+        // Split each non-empty line by comma and trim whitespace
+        const [rawName, rawPosition = "Any", rawSkill = "Medium"] = line
+          .split(",")
+          .map((item) => item.trim());
+
+        // Normalize inputs to lower case for mapping
+        const name = rawName || "";
+        const normalizedPosition =
+          positionsMap[rawPosition.toLowerCase()] || "Any";
+        const normalizedSkill = skillsMap[rawSkill.toLowerCase()] || "Medium";
+
+        return {
+          name,
+          position: normalizedPosition,
+          skill: normalizedSkill,
+        };
+      });
+  };
+
+  // Clear the import text
+  const handleClearImport = () => {
+    setImportText("");
+  };
+
+  // Confirms the import process, updates players list, and resets input field
+  const handleConfirmImport = () => {
+    const newPlayers = parseImportData(importText);
+    setPlayers(newPlayers); // Replace existing players with imported ones
+    setIsImporting(false);
+    setImportText(""); // Clear import text after processing
+  };
 
   /**
    * Update a specific player in the list with new values
@@ -138,263 +226,340 @@ export function PlayersList() {
             >
               Players
             </h3>
+            {/* - If isImporting is true, hide the Dropdown */}
             {/* Dropdown to select the number of players */}
-            <Select
-              name="number-of-players"
-              value={players.length.toString()}
-              onValueChange={(value) =>
-                handleUpdateNumberOfPlayers(parseInt(value, 10))
-              }
-            >
-              <SelectTrigger
-                className="w-16"
-                aria-label="Number of Players"
-                id="number-of-players"
+            {!isImporting && (
+              <Select
+                name="number-of-players"
+                value={players.length.toString()}
+                onValueChange={(value) =>
+                  handleUpdateNumberOfPlayers(parseInt(value, 10))
+                }
               >
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {/* Generate selectable numbers from 1 to 100 dynamically */}
-                {Array.from({ length: 100 }, (_, i) => (
-                  <SelectItem
-                    key={i + 1}
-                    value={(i + 1).toString()}
-                    aria-label={`Select ${i + 1} players`}
-                  >
-                    {i + 1}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+                <SelectTrigger
+                  className="w-16"
+                  aria-label="Number of Players"
+                  id="number-of-players"
+                >
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {/* Generate selectable numbers from 1 to 100 dynamically */}
+                  {Array.from({ length: 100 }, (_, i) => (
+                    <SelectItem
+                      key={i + 1}
+                      value={(i + 1).toString()}
+                      aria-label={`Select ${i + 1} players`}
+                    >
+                      {i + 1}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
           </div>
-          <Button aria-label="Import Players" type="button" variant="secondary">
-            Import Players
-          </Button>
+          {isImporting ? (
+            <Button
+              aria-label="Cancel Import Players"
+              type="button"
+              variant="secondary"
+              onClick={handleImportToggle}
+            >
+              Cancel Import
+            </Button>
+          ) : (
+            <Button
+              aria-label="Import Players"
+              type="button"
+              variant="secondary"
+              onClick={handleImportToggle}
+            >
+              Import Players
+            </Button>
+          )}
         </div>
-        {/* This div is hidden intentionally to be shown later when Import Players button is clicked */}
-        <div className="hidden flex flex-col gap-2">
-          <Label className="text-sm text-gray-600" htmlFor="import-players">
+      </header>
+
+      {/* 
+        Renders either the Import Players or Players Table section based on "isImporting":  
+        - true: Shows the import area with textarea and controls.  
+        - false: Displays the table for managing players.  
+      */}
+      {isImporting ? (
+        <section
+          aria-label="Import Players Section"
+          className="flex flex-col gap-6 p-6 pt-0"
+        >
+          <Label
+            className="text-sm text-zinc-500 dark:text-zinc-400 font-normal"
+            htmlFor="import-players"
+          >
             Insert or paste a list of players. One player per line. Optionally,
-            add position and skill level separated by commas.
+            add position and skill level separated by commas. If a position or
+            skill level isn't recognized, it will default to{" "}
+            <strong>"Any"</strong> for positions and <strong>"Medium"</strong>{" "}
+            for skills.
           </Label>
           <Textarea
-            placeholder="e.g., Ronaldo, Forward, High"
-            rows={7}
+            placeholder={`Ronaldo\nRonaldo, FORWARD\nRonaldo, Forward, High\nRonaldo, fw, h`}
+            rows={6}
             id="import-players"
             name="import-players"
+            aria-label="Import Players Textarea"
+            value={importText}
+            onChange={handleImportChange}
           />
           <div className="flex gap-2 items-center justify-between">
             <Button
               type="button"
-              aria-label="Cancel Import Players"
+              aria-label="Clear Import Text"
               variant="outline"
+              onClick={handleClearImport}
             >
-              Cancel
+              Clear
             </Button>
-            <Button type="button" aria-label="Confirm Import Players">
-              Confirm Import
-            </Button>
+
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant="default">Import players</Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This action cannot be undone. Confirming the import will
+                    overwrite your existing list of players.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={handleConfirmImport}
+                    aria-label="Confirm Import Players"
+                  >
+                    Confirm Import
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </div>
-        </div>
-        <p className="text-sm text-zinc-500 dark:text-zinc-400">
-          Choose the number of players, then enter each player's name, position,
-          and skill level. Optionally, import a list of players.
-        </p>
-      </header>
+        </section>
+      ) : (
+        <section
+          aria-label="Players Table Section"
+          className="flex flex-col gap-6 p-6 pt-0"
+        >
+          <p
+            id="players-table-instructions"
+            className="text-sm text-zinc-500 dark:text-zinc-400"
+          >
+            Choose the number of players, then enter each player's name,
+            position, and skill level. Optionally, import a list of players.
+          </p>
+          <Table aria-describedby="players-table-instructions">
+            <TableHeader>
+              <TableRow>
+                <TableHead>Name</TableHead>
+                <TableHead>Position</TableHead>
+                <TableHead>Skill</TableHead>
+                <TableHead className="text-right">{/* Actions */}</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {players.map((player, index) => (
+                <TableRow key={index} className="">
+                  {/* Editable input for player name */}
+                  <TableCell className="px-0.5">
+                    <Input
+                      className="truncate"
+                      type="text"
+                      value={player.name}
+                      onChange={(e) =>
+                        handleUpdatePlayer(index, { name: e.target.value })
+                      }
+                      aria-label={`${
+                        player.name || `Player ${index + 1}`
+                      } Name`}
+                      placeholder={`Player ${index + 1}`}
+                      id={`player-${index + 1}-name`}
+                      name={`player-${index + 1}-name`}
+                      required
+                    />
+                  </TableCell>
 
-      <div className="flex flex-col gap-4 p-6 pt-0">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead>Position</TableHead>
-              <TableHead>Skill</TableHead>
-              <TableHead className="text-right">{/* Actions */}</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {players.map((player, index) => (
-              <TableRow key={index} className="">
-                {/* Editable input for player name */}
-                <TableCell className="px-0.5">
-                  <Input
-                    className="truncate"
-                    type="text"
-                    value={player.name}
-                    onChange={(e) =>
-                      handleUpdatePlayer(index, { name: e.target.value })
-                    }
-                    aria-label={`Player Name ${index + 1}`}
-                    placeholder={`Player ${index + 1}`}
-                    id={`player-name-${index + 1}`}
-                    name={`player-name-${index + 1}`}
-                    required
-                  />
-                </TableCell>
-
-                {/* Select dropdown for player position */}
-                <TableCell className="px-0.5">
-                  <Select
-                    required
-                    name={`player-position-${index + 1}`}
-                    value={player.position}
-                    onValueChange={(value) =>
-                      handleUpdatePlayer(index, {
-                        position: value as Player["position"],
-                      })
-                    }
-                  >
-                    <SelectTrigger
-                      id={`player-position-${index + 1}`}
-                      aria-label={`Player Position ${index + 1}`}
+                  {/* Select dropdown for player position */}
+                  <TableCell className="px-0.5">
+                    <Select
+                      required
+                      name={`player-${index + 1}-position`}
+                      value={player.position}
+                      onValueChange={(value) =>
+                        handleUpdatePlayer(index, {
+                          position: value as Player["position"],
+                        })
+                      }
                     >
-                      <SelectValue placeholder="Position">
-                        <abbr
-                          title={player.position}
-                          className="sm:hidden no-underline"
+                      <SelectTrigger
+                        id={`player-${index + 1}-position`}
+                        aria-label={`${
+                          player.name || `Player ${index + 1}`
+                        } Position`}
+                      >
+                        <SelectValue placeholder="Position">
+                          <abbr
+                            title={player.position}
+                            className="sm:hidden no-underline"
+                          >
+                            {getAbbreviation(player.position)}
+                          </abbr>
+                          <span className="hidden sm:inline">
+                            {player.position}
+                          </span>
+                        </SelectValue>
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem
+                          value="Any"
+                          aria-label={`Select Any position`}
                         >
-                          {getAbbreviation(player.position)}
-                        </abbr>
-                        <span className="hidden sm:inline">
-                          {player.position}
-                        </span>
-                      </SelectValue>
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem
-                        value="Any"
-                        aria-label={`Select Any position`}
-                      >
-                        Any
-                      </SelectItem>
-                      <SelectItem
-                        value="Goalkeeper"
-                        aria-label={`Select Goalkeeper position`}
-                      >
-                        Goalkeeper
-                      </SelectItem>
-                      <SelectItem
-                        value="Defender"
-                        aria-label={`Select Defender position`}
-                      >
-                        Defender
-                      </SelectItem>
-                      <SelectItem
-                        value="Midfielder"
-                        aria-label={`Select Midfielder position`}
-                      >
-                        Midfielder
-                      </SelectItem>
-                      <SelectItem
-                        value="Forward"
-                        aria-label={`Select Forward position`}
-                      >
-                        Forward
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
-                </TableCell>
+                          Any
+                        </SelectItem>
+                        <SelectItem
+                          value="Goalkeeper"
+                          aria-label={`Select Goalkeeper position`}
+                        >
+                          Goalkeeper
+                        </SelectItem>
+                        <SelectItem
+                          value="Defender"
+                          aria-label={`Select Defender position`}
+                        >
+                          Defender
+                        </SelectItem>
+                        <SelectItem
+                          value="Midfielder"
+                          aria-label={`Select Midfielder position`}
+                        >
+                          Midfielder
+                        </SelectItem>
+                        <SelectItem
+                          value="Forward"
+                          aria-label={`Select Forward position`}
+                        >
+                          Forward
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </TableCell>
 
-                {/* Select dropdown for player skill level */}
-                <TableCell className="px-0.5">
-                  <Select
-                    required
-                    name={`player-skill-${index + 1}`}
-                    value={player.skill}
-                    onValueChange={(value) =>
-                      handleUpdatePlayer(index, {
-                        skill: value as Player["skill"],
-                      })
-                    }
-                  >
-                    <SelectTrigger
-                      id={`player-skill-${index + 1}`}
-                      aria-label={`Player Skill ${index + 1}`}
+                  {/* Select dropdown for player skill level */}
+                  <TableCell className="px-0.5">
+                    <Select
+                      required
+                      name={`player-${index + 1}-skill`}
+                      value={player.skill}
+                      onValueChange={(value) =>
+                        handleUpdatePlayer(index, {
+                          skill: value as Player["skill"],
+                        })
+                      }
                     >
-                      <SelectValue placeholder="Skill">
-                        <abbr
-                          title={player.skill}
-                          className="sm:hidden no-underline"
-                        >
-                          {getAbbreviation(player.skill)}
-                        </abbr>
-                        <span className="hidden sm:inline">{player.skill}</span>
-                      </SelectValue>
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Low" aria-label={`Select Low skill`}>
-                        Low
-                      </SelectItem>
-                      <SelectItem
-                        value="Medium"
-                        aria-label={`Select Medium skill`}
+                      <SelectTrigger
+                        id={`player-${index + 1}-skill`}
+                        aria-label={`${
+                          player.name || `Player ${index + 1}`
+                        } Skill`}
                       >
-                        Medium
-                      </SelectItem>
-                      <SelectItem value="High" aria-label={`Select High skill`}>
-                        High
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
-                </TableCell>
+                        <SelectValue placeholder="Skill">
+                          <abbr
+                            title={player.skill}
+                            className="sm:hidden no-underline"
+                          >
+                            {getAbbreviation(player.skill)}
+                          </abbr>
+                          <span className="hidden sm:inline">
+                            {player.skill}
+                          </span>
+                        </SelectValue>
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Low" aria-label={`Select Low skill`}>
+                          Low
+                        </SelectItem>
+                        <SelectItem
+                          value="Medium"
+                          aria-label={`Select Medium skill`}
+                        >
+                          Medium
+                        </SelectItem>
+                        <SelectItem
+                          value="High"
+                          aria-label={`Select High skill`}
+                        >
+                          High
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </TableCell>
 
-                {/* Delete Player button */}
-                <TableCell className="px-0.5 text-right">
+                  {/* Delete Player button */}
+                  <TableCell className="px-0.5 text-right">
+                    <Button
+                      type="button"
+                      variant="destructive"
+                      onClick={() => handleDelete(index)}
+                      aria-label={`Delete Player ${
+                        player.name || `${index + 1}`
+                      }`}
+                    >
+                      <abbr
+                        title="Delete"
+                        className="no-underline sm:after:content-['Delete'] after:content-['X']"
+                      ></abbr>
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+
+            <tfoot>
+              <TableRow className="border-t border-b-0 hover:bg-transparent">
+                {/* Clear Players Data button */}
+                <TableCell
+                  colSpan={2}
+                  className={
+                    players.length <= 0 ? "hidden" : "text-left pt-6 px-0.5"
+                  }
+                >
                   <Button
                     type="button"
-                    variant="destructive"
-                    onClick={() => handleDelete(index)}
-                    aria-label="Delete Player"
+                    variant="outline"
+                    onClick={handleResetPlayers}
+                    aria-label="Reset Players Data"
                   >
-                    <abbr
-                      title="Delete"
-                      className="no-underline sm:after:content-['Delete'] after:content-['X']"
-                    ></abbr>
+                    Reset
+                  </Button>
+                </TableCell>
+                {/* Add Player button */}
+                <TableCell
+                  colSpan={players.length <= 0 ? 4 : 2}
+                  className={`${
+                    players.length <= 0 ? `text-center` : `text-right`
+                  } pt-6 px-0.5`}
+                >
+                  <Button
+                    type="button"
+                    onClick={handleAddPlayer}
+                    aria-label="Add Player"
+                  >
+                    Add Player
                   </Button>
                 </TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-
-          <tfoot>
-            <TableRow className="border-t border-b-0 hover:bg-transparent">
-              {/* Clear Players Data button */}
-              <TableCell
-                colSpan={2}
-                className={
-                  players.length <= 0 ? "hidden" : "text-left pt-6 px-0.5"
-                }
-              >
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={handleResetPlayers}
-                  aria-label="Reset Players Data"
-                >
-                  Reset
-                </Button>
-              </TableCell>
-              {/* Add Player button */}
-              <TableCell
-                colSpan={players.length <= 0 ? 4 : 2}
-                className={
-                  players.length <= 0
-                    ? "text-center pt-6 px-0.5"
-                    : "text-right pt-6 px-0.5"
-                }
-              >
-                <Button
-                  type="button"
-                  onClick={handleAddPlayer}
-                  aria-label="Add Player"
-                >
-                  Add Player
-                </Button>
-              </TableCell>
-            </TableRow>
-          </tfoot>
-        </Table>
-      </div>
+            </tfoot>
+          </Table>
+        </section>
+      )}
     </section>
   );
 }
