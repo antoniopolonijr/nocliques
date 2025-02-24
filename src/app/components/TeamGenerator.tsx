@@ -7,20 +7,28 @@
 // Import dependencies
 "use client";
 import * as React from "react";
+// Import useState hook from React
 import { useState } from "react";
+// Import Burron component from Button.tsx
 import { Button } from "@/components/ui/button";
-import { EntitiesList } from "./EntitiesList";
+// Import function from entityUtils.ts
+import { initializeEntities } from "@/app/utils/entityUtils";
+// Import types from entityTypes.ts
+import { Player, Team } from "@/app/types/entityTypes";
+// Import EntitiesList and GeneratedTeamsList components
+import { EntitiesList } from "./entities-list/EntitiesList";
 import { GeneratedTeamsList } from "./GeneratedTeamsList";
-import { Player, Team, initializeEntities } from "./EntitiesList";
 
 /**
  * TeamGenerator component
- * This component is responsible for generating teams based on player inputs.
- * It includes sections for player input, team input, and displaying the generated teams.
  */
-export function TeamGenerator() {
+
+export const TeamGenerator = () => {
   /**
    * State for players and teams
+   * Initialize players and teams with default values
+   * Players and teams are stored as arrays of Player and Team objects
+   * The initializeEntities function is used to create default entities
    */
   const [players, setPlayers] = useState<Player[]>(
     initializeEntities("Players")
@@ -30,7 +38,6 @@ export function TeamGenerator() {
   /**
    * Render the TeamGenerator component
    */
-
   return (
     <section
       aria-labelledby="team-generator-title"
@@ -78,14 +85,16 @@ export function TeamGenerator() {
       </section>
       {/* Footer section with action buttons */}
       <footer className="flex justify-between items-center p-4 sm:p-6 pt-0 sm:pt-0">
+        {/* Reset button */}
         <Button aria-label="Reset" type="button" variant="secondary">
           Reset
         </Button>
+        {/* Generate teams button */}
         <Button
           aria-label="Generate Teams"
           type="button"
           onClick={() => {
-            console.log(players, teams); // Log players and teams
+            console.log(players, teams); // todo: implement team generation
           }}
         >
           Generate Teams
@@ -93,4 +102,4 @@ export function TeamGenerator() {
       </footer>
     </section>
   );
-}
+};
