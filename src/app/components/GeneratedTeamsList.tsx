@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 /**
  * GeneratedTeamList component
  */
-export function GeneratedTeamsList() {
+export default function GeneratedTeamsList() {
   return (
     <section
       aria-labelledby="generated-teams-list-title"

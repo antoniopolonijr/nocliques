@@ -38,11 +38,12 @@ import { EntityType, EntityImportProps } from "@/app/types/entityTypes";
  * @param setEntities - Function to update the list of entities
  * @param setIsImporting - Function to set the import state
  */
-export const EntityImport = <T extends EntityType>({
+
+export default function EntityImport<T extends EntityType>({
   entityType,
   setEntities,
   setIsImporting,
-}: EntityImportProps<T>) => {
+}: EntityImportProps<T>) {
   // Format the entity type for display
   const { singular, plural, capitalizedSingular, capitalizedPlural } =
     formatEntity(entityType);
@@ -153,4 +154,4 @@ export const EntityImport = <T extends EntityType>({
       </div>
     </section>
   );
-};
+}
