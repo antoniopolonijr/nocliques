@@ -1,10 +1,13 @@
-import * as React from "react";
+/**
+ * GeneratedTeamsList component
+ * This component displays the generated teams.
+ */
 
+// Import the Button component from the UI library
 import { Button } from "@/components/ui/button";
 
 /**
  * GeneratedTeamList component
- * This component displays the generated teams.
  */
 export function GeneratedTeamsList() {
   return (
