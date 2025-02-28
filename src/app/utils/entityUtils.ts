@@ -2,9 +2,10 @@
  * Utility functions for entity management and normalization.
  */
 
-// Importing types
+// Types
 import { EntityMap, EntityType } from "@/app/types/entityTypes";
-// Importing default values and normalization maps
+
+// Cpnstants
 import {
   entityDefaults,
   entityDefaultLengths,

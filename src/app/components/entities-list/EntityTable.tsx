@@ -13,7 +13,7 @@
  * Import dependencies
  */
 
-// Import the Button, Input, Select, and Table components from the UI library
+// UI Components
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -31,16 +31,19 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-// Import types from the entityTypes module
+
+// Types
 import {
   EntityType,
   EntityMap,
   Player,
   EntityTableProps,
 } from "@/app/types/entityTypes";
-// Import constants from the entityDefaults module
+
+// Constants
 import { entityDefaults } from "@/app/constants/entityDefaults";
-// Import functions from the entityUtils module
+
+// Utility Functions
 import {
   formatEntity,
   getAbbreviation,
@@ -51,7 +54,10 @@ import {
 } from "@/app/utils/entityUtils";
 
 /**
- * EntitiesList Component
+ * EntityTable Component
+ * @param entityType - The type of entity to manage
+ * @param entities - The list of entities to display
+ * @param setEntities - Function to update the list of entities
  */
 export default function EntityTable<T extends EntityType>({
   entityType,
@@ -165,11 +171,11 @@ export default function EntityTable<T extends EntityType>({
                         {/* Display the position abbreviation (e.g., "GK" for "Goalkeeper") on small screens */}
                         <abbr
                           title={(entity as Player).position}
-                          className="sm:hidden no-underline"
+                          className="sm:hidden md:inline lg:hidden no-underline"
                         >
                           {getAbbreviation((entity as Player).position)}
                         </abbr>
-                        <span className="hidden sm:inline">
+                        <span className="hidden sm:inline md:hidden lg:inline">
                           {(entity as Player).position}
                         </span>
                       </SelectValue>
@@ -226,11 +232,11 @@ export default function EntityTable<T extends EntityType>({
                         {/* Display the skill abbreviation (e.g., "H" for "High") on small screens */}
                         <abbr
                           title={(entity as Player).skill}
-                          className="sm:hidden no-underline"
+                          className="sm:hidden md:inline lg:hidden no-underline"
                         >
                           {getAbbreviation((entity as Player).skill)}
                         </abbr>
-                        <span className="hidden sm:inline">
+                        <span className="hidden sm:inline md:hidden lg:inline">
                           {(entity as Player).skill}
                         </span>
                       </SelectValue>

@@ -2,7 +2,7 @@
  * Constants for abbreviations and normalization maps.
  */
 
-// Importing necessary types
+// Types
 import { Player } from "@/app/types/entityTypes";
 
 /**

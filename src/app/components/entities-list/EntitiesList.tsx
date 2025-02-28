@@ -1,3 +1,5 @@
+"use client";
+
 /**
  * EntitiesList Component
  * This component allows users to input and manage a list of entities.
@@ -10,9 +12,11 @@
 /**
  * Import dependencies
  */
-"use client";
+
+// React Hooks
 import { useState } from "react";
-// Import the Button and Select components from the UI library
+
+// UI Components
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -21,11 +25,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-// Import types from the entityTypes file
+
+// Types
 import { EntityType, EntitiesListProps } from "@/app/types/entityTypes";
-// Import utility functions from the entityUtils file
+
+// Utility Functions
 import { formatEntity, updateNumberOfEntities } from "@/app/utils/entityUtils";
-// Import the EntityImport and EntityTable components
+
+// Components
 import EntityImport from "@/app/components/entities-list/EntityImport";
 import EntityTable from "@/app/components/entities-list/EntityTable";
 
@@ -64,7 +71,7 @@ export default function EntitiesList<T extends EntityType>({
       aria-labelledby={`${capitalizedPlural}-list-title`}
       className="rounded-xl border border-zinc-200 bg-white text-zinc-950 shadow dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-50"
     >
-      <header className="flex flex-col gap-4 p-4 sm:p-6">
+      <header className="p-4 sm:p-6">
         <div className="flex justify-between items-center">
           <div className="flex gap-2 items-center">
             <h3

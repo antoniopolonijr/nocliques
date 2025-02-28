@@ -6,7 +6,11 @@
  * This is used to provide a single source of truth for default values.
  */
 
-// Import types from entityTypes
+/**
+ * Import dependencies
+ */
+
+// Types
 import { EntityMap, EntityType } from "@/app/types/entityTypes";
 
 // Default Entity Values
