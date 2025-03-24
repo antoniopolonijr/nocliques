@@ -26,17 +26,6 @@ import { Player, GeneratedTableProps } from "@/app/types/entityTypes";
 import { getAbbreviation } from "@/app/utils/entityUtils";
 
 /**
- * Utility function to shuffle an array of players.
- * This helps randomize substitution order within each team.
- *
- * @param players - Array of players to shuffle
- * @returns A new shuffled array of players
- */
-const shufflePlayers = (players: Player[]): Player[] => {
-  return [...players].sort(() => Math.random() - 0.5);
-};
-
-/**
  * GeneratedTable Component
  *
  * @param {GeneratedTableProps} props - Component props containing `generatedTeams`
@@ -95,10 +84,10 @@ export default function GeneratedTable({
             </TableHeader>
             <TableBody>
               {/* Render shuffled players to determine substitution order */}
-              {shufflePlayers(teamPlayers).map((player, index) => (
+              {teamPlayers.map((player, index) => (
                 <TableRow key={`${player.name}-${index}`} className="w-full">
                   {/* Substitution Order - Displayed as "1º", "2º", etc. */}
-                  <TableCell>{index + 1}º</TableCell>
+                  <TableCell>{index === 0 ? "" : `${index}º`}</TableCell>
 
                   {/* Player Position - Abbreviation on smaller screens */}
                   <TableCell>

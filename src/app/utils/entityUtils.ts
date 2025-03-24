@@ -5,7 +5,7 @@
 // Types
 import { EntityMap, EntityType } from "@/app/types/entityTypes";
 
-// Cpnstants
+// Constants
 import {
   entityDefaults,
   entityDefaultLengths,
