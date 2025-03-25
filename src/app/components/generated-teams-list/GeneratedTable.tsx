@@ -67,7 +67,7 @@ export default function GeneratedTable({
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Sub</TableHead>
+                <TableHead>Subs</TableHead>
                 <TableHead>
                   <abbr
                     title="Position"
@@ -83,11 +83,15 @@ export default function GeneratedTable({
               </TableRow>
             </TableHeader>
             <TableBody>
-              {/* Render shuffled players to determine substitution order */}
+              {/* Render substitution order */}
               {teamPlayers.map((player, index) => (
                 <TableRow key={`${player.name}-${index}`} className="w-full">
                   {/* Substitution Order - Displayed as "1º", "2º", etc. */}
-                  <TableCell>{index === 0 ? "" : `${index}º`}</TableCell>
+                  <TableCell>
+                    {player.position === "Goalkeeper"
+                      ? ""
+                      : `${player.substitutionOrder}º`}
+                  </TableCell>
 
                   {/* Player Position - Abbreviation on smaller screens */}
                   <TableCell>
