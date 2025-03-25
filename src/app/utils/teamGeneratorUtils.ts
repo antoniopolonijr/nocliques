@@ -67,12 +67,71 @@ export function getSortedTeams(
 }
 
 /**
+ * Predefined sorting order for player positions.
+ */
+const POSITION_ORDER: Record<string, number> = {
+  Goalkeeper: 0,
+  Defender: 1,
+  Midfielder: 2,
+  Forward: 3,
+  Any: 4,
+};
+
+/**
+ * Sorts players by their predefined position order.
+ *
+ * @param players - List of players to be sorted.
+ * @returns Sorted list of players.
+ */
+export function sortPlayersByPosition(players: Player[]): Player[] {
+  return players.sort(
+    (a, b) => POSITION_ORDER[a.position] - POSITION_ORDER[b.position]
+  );
+}
+
+/**
+ * Assigns a random substitution order to non-goalkeeper players. *
+ *
+ * @param players - List of players to process.
+ */
+export function assignSubstitutionOrder(players: Player[]): void {
+  const eligiblePlayers = players.filter(
+    (player) => player.position !== "Goalkeeper"
+  );
+  const shuffledPlayers = [...eligiblePlayers].sort(() => Math.random() - 0.5);
+  shuffledPlayers.forEach((player, index) => {
+    player.substitutionOrder = index + 1;
+  });
+}
+
+/**
+ * Function that assign Default Names to the entities if their names are empty.
+ *
+ * @param entities - List of entities (players or teams).
+ * @param defaultNamePrefix - The prefix used for the placeholder (e.g., "Player" or "Team").
+ * @returns Updated list of entities with names filled.
+ */
+export function assignDefaultNames<T extends { name: string }>(
+  entities: T[],
+  defaultNamePrefix: string
+): T[] {
+  return entities.map((entity, index) => ({
+    ...entity,
+    name:
+      entity.name && entity.name.trim() !== ""
+        ? entity.name
+        : `${defaultNamePrefix} ${index + 1}`,
+  }));
+}
+
+/**
  * Generates balanced teams based on player skills and positions.
  *
  * - Distributes high-skill players first to balance skill gaps.
  * - Distributes low-skill players next, prioritizing high-skill-balanced teams.
  * - Distributes medium-skill players last to equalize team sizes.
  * - Ensures each team has a balanced number of players per position.
+ * - Assigns a substitution order and sorts players by position.
  *
  * @param players - List of players.
  * @param teams - List of teams.
@@ -87,9 +146,14 @@ export function generateBalancedTeams(
   const lowSkill: Player[] = [];
   const goalkeepers: Player[] = [];
 
-  // Shuffle players for randomness
-  const shuffledPlayers = [...players].sort(() => Math.random() - 0.5);
+  // Assign Default Names to the entities if their names are empty
+  const updatedPlayers = assignDefaultNames(players, "Player");
+  const updatedTeams = assignDefaultNames(teams, "Team");
 
+  // Shuffle players for randomness
+  const shuffledPlayers = [...updatedPlayers].sort(() => Math.random() - 0.5);
+
+  // Categorize players
   shuffledPlayers.forEach((player) => {
     if (player.position === "Goalkeeper") {
       goalkeepers.push(player);
@@ -102,10 +166,11 @@ export function generateBalancedTeams(
     }
   });
 
+  // Initialize team map with empty
   const teamMap: Record<string, Player[]> = {};
-  teams.forEach((team) => (teamMap[team.name] = []));
+  updatedTeams.forEach((team) => (teamMap[team.name] = []));
   const teamNames = Object.keys(teamMap);
-  const playersPerTeam = Math.floor(players.length / teamNames.length);
+  const playersPerTeam = Math.floor(shuffledPlayers.length / teamNames.length);
 
   /**
    * Distributes players in a round-robin fashion while ensuring balanced team sizes.
@@ -183,5 +248,13 @@ export function generateBalancedTeams(
   distributePlayersInRounds(mediumSkill); // Medium-skill players balance team size
   balanceTeamSizes(); // Final balancing of team sizes
 
-  return teamMap;
+  // Assign substitution order and sort players for each team
+  const generatedTeams: GeneratedTeams = {};
+  Object.keys(teamMap).forEach((teamName) => {
+    const clonedPlayers = teamMap[teamName].map((player) => ({ ...player })); // Avoids mutations in the original array
+    assignSubstitutionOrder(clonedPlayers);
+    generatedTeams[teamName] = sortPlayersByPosition(clonedPlayers);
+  });
+
+  return generatedTeams;
 }

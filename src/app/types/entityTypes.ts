@@ -20,6 +20,7 @@ export interface BaseEntity {
 export interface Player extends BaseEntity {
   position: "Any" | "Goalkeeper" | "Defender" | "Midfielder" | "Forward";
   skill: "Low" | "Medium" | "High";
+  substitutionOrder?: number;
 }
 
 // Team entity only has a name.
