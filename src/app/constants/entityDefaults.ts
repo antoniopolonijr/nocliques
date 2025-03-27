@@ -11,7 +11,7 @@
  */
 
 // Types
-import { EntityMap, EntityType } from "@/app/types/entityTypes";
+import { EntityMap, EntityType, Player } from "@/app/types/entityTypes";
 
 // Default Entity Values
 // Provides a single source of truth for default values of each entity type.
@@ -26,4 +26,29 @@ export const entityDefaultLengths: { [K in EntityType]: number } = {
   Players: 16,
   Teams: 2,
   // NewEntityType: 10, // Example for a future entity
+};
+
+// Constant array to store Player Positions options
+export const playerPositions: Player["position"][] = [
+  "Any",
+  "Goalkeeper",
+  "Defender",
+  "Defensive Midfielder",
+  "Attacking Midfielder",
+  "Forward",
+];
+
+// Constant array to store Player Positions options
+export const playerSkills: Player["skill"][] = ["Low", "Medium", "High"];
+
+/**
+ * Predefined sorting order for player positions.
+ */
+export const POSITION_ORDER: Record<string, number> = {
+  Goalkeeper: 0,
+  Defender: 1,
+  "Defensive Midfielder": 2,
+  "Attacking Midfielder": 3,
+  Forward: 4,
+  Any: 5,
 };

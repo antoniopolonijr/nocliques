@@ -5,6 +5,9 @@
 // Types
 import { Player, Team, GeneratedTeams } from "@/app/types/entityTypes";
 
+// Constants
+import { POSITION_ORDER } from "@/app/constants/entityDefaults";
+
 /**
  * Counts the total number of players in a given team.
  */
@@ -65,17 +68,6 @@ export function getSortedTeams(
     return countTotalPlayers(teamMap[a]) - countTotalPlayers(teamMap[b]);
   });
 }
-
-/**
- * Predefined sorting order for player positions.
- */
-const POSITION_ORDER: Record<string, number> = {
-  Goalkeeper: 0,
-  Defender: 1,
-  Midfielder: 2,
-  Forward: 3,
-  Any: 4,
-};
 
 /**
  * Sorts players by their predefined position order.

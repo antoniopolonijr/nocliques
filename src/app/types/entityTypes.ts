@@ -18,7 +18,13 @@ export interface BaseEntity {
 
 // Player entity with additional fields.
 export interface Player extends BaseEntity {
-  position: "Any" | "Goalkeeper" | "Defender" | "Midfielder" | "Forward";
+  position:
+    | "Any"
+    | "Goalkeeper"
+    | "Defender"
+    | "Defensive Midfielder"
+    | "Attacking Midfielder"
+    | "Forward";
   skill: "Low" | "Medium" | "High";
   substitutionOrder?: number;
 }
