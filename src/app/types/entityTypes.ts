@@ -16,10 +16,20 @@ export interface BaseEntity {
   name: string;
 }
 
+export type SkillLevel = "Low" | "Medium" | "High";
+
+export type Position =
+  | "Any"
+  | "Goalkeeper"
+  | "Defender"
+  | "Defensive Midfielder"
+  | "Attacking Midfielder"
+  | "Forward";
+
 // Player entity with additional fields.
 export interface Player extends BaseEntity {
-  position: "Any" | "Goalkeeper" | "Defender" | "Midfielder" | "Forward";
-  skill: "Low" | "Medium" | "High";
+  position: Position;
+  skill: SkillLevel;
   substitutionOrder?: number;
 }
 

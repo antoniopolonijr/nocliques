@@ -3,7 +3,16 @@
  */
 
 // Types
-import { Player, Team, GeneratedTeams } from "@/app/types/entityTypes";
+import {
+  Player,
+  Team,
+  GeneratedTeams,
+  Position,
+  SkillLevel,
+} from "@/app/types/entityTypes";
+
+// Constants
+import { POSITION_ORDER } from "@/app/constants/entityDefaults";
 
 /**
  * Counts the total number of players in a given team.
@@ -27,6 +36,14 @@ export function countSkillPlayers(team: Player[], skill: string): number {
 }
 
 /**
+ * Determines the skill balance of a team by calculating the difference between high and low skill players.
+ * @param team - Array of players in the team.
+ * @returns Skill balance as a difference between high and low skill counts.
+ */
+const getSkillBalance = (team: Player[]): number =>
+  countSkillPlayers(team, "High") - countSkillPlayers(team, "Low");
+
+/**
  * Sorts teams based on the best fit for a given player.
  *
  * - Prioritizes balancing high vs. low skill players.
@@ -41,16 +58,13 @@ export function getSortedTeams(
 ): string[] {
   return [...teamNames].sort((a, b) => {
     if (skillPriority) {
-      const skillBalanceA =
-        countSkillPlayers(teamMap[a], "High") -
-        countSkillPlayers(teamMap[a], "Low");
-      const skillBalanceB =
-        countSkillPlayers(teamMap[b], "High") -
-        countSkillPlayers(teamMap[b], "Low");
+      const skillBalanceA = getSkillBalance(teamMap[a]);
+      const skillBalanceB = getSkillBalance(teamMap[b]);
 
-      if (player.skill === "High" && skillBalanceB !== skillBalanceA) {
+      if (player.skill === "High" && skillBalanceA !== skillBalanceB) {
         return skillBalanceA - skillBalanceB; // Prioritize teams with more low-skill players
-      } else if (player.skill === "Low" && skillBalanceB !== skillBalanceA) {
+      }
+      if (player.skill === "Low" && skillBalanceA !== skillBalanceB) {
         return skillBalanceB - skillBalanceA; // Prioritize teams with more high-skill players
       }
     }
@@ -65,17 +79,6 @@ export function getSortedTeams(
     return countTotalPlayers(teamMap[a]) - countTotalPlayers(teamMap[b]);
   });
 }
-
-/**
- * Predefined sorting order for player positions.
- */
-const POSITION_ORDER: Record<string, number> = {
-  Goalkeeper: 0,
-  Defender: 1,
-  Midfielder: 2,
-  Forward: 3,
-  Any: 4,
-};
 
 /**
  * Sorts players by their predefined position order.
@@ -127,8 +130,9 @@ export function assignDefaultNames<T extends { name: string }>(
 /**
  * Generates balanced teams based on player skills and positions.
  *
- * - Distributes high-skill players first to balance skill gaps.
- * - Distributes low-skill players next, prioritizing high-skill-balanced teams.
+ * - Distributes goalkeepers first.
+ * - Prioritizes teams with more low-skill players when adding a high-skill player.
+ * - - Prioritizes teams with more high-skill players when adding a low-skill player.
  * - Distributes medium-skill players last to equalize team sizes.
  * - Ensures each team has a balanced number of players per position.
  * - Assigns a substitution order and sorts players by position.
@@ -243,8 +247,8 @@ export function generateBalancedTeams(
 
   // Distribute players ensuring fairness
   distributePlayersInRounds(goalkeepers); // Ensure goalkeepers are evenly spread
-  distributePlayersInRounds(highSkill, true); // Prioritize skill balancing for high-skill players
-  distributePlayersInRounds(lowSkill, true); // Balance low-skill players accordingly
+  distributePlayersInRounds(highSkill, true); // Prioritizes teams with more low-skill players when adding a high-skill player.
+  distributePlayersInRounds(lowSkill, true); // Prioritizes teams with more high-skill players when adding a low-skill player.
   distributePlayersInRounds(mediumSkill); // Medium-skill players balance team size
   balanceTeamSizes(); // Final balancing of team sizes
 

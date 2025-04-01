@@ -41,7 +41,11 @@ import {
 } from "@/app/types/entityTypes";
 
 // Constants
-import { entityDefaults } from "@/app/constants/entityDefaults";
+import {
+  entityDefaults,
+  playerPositions,
+  playerSkills,
+} from "@/app/constants/entityDefaults";
 
 // Utility Functions
 import {
@@ -182,13 +186,7 @@ export default function EntityTable<T extends EntityType>({
                     </SelectTrigger>
                     <SelectContent>
                       {/* Generate selectable positions dynamically */}
-                      {[
-                        "Any",
-                        "Goalkeeper",
-                        "Defender",
-                        "Midfielder",
-                        "Forward",
-                      ].map((position) => (
+                      {playerPositions.map((position) => (
                         <SelectItem
                           key={position}
                           value={position}
@@ -209,11 +207,11 @@ export default function EntityTable<T extends EntityType>({
                   <Select
                     required
                     name={`${singular}-${index + 1}-skill`} // Unique name for each entity field
-                    // Use entity skill if set, default to "Low" if not set
+                    // Use entity skill if set, default to "Medium" if not set
                     value={
                       ("skill" in entity
                         ? entity.skill
-                        : "Low") as Player["skill"]
+                        : "Medium") as Player["skill"]
                     }
                     // Update the entity skill level when the value changes
                     onValueChange={(value) =>
@@ -243,7 +241,7 @@ export default function EntityTable<T extends EntityType>({
                     </SelectTrigger>
                     <SelectContent>
                       {/* Generate selectable skill levels dynamically */}
-                      {["Low", "Medium", "High"].map((skill) => (
+                      {playerSkills.map((skill) => (
                         <SelectItem
                           key={skill}
                           value={skill}

@@ -12,7 +12,8 @@ export const abbreviations: Record<string, string> = {
   // Positions
   Goalkeeper: "GK",
   Defender: "DF",
-  Midfielder: "MF",
+  "Defensive Midfielder": "DM",
+  "Attacking Midfielder": "AM",
   Forward: "FW",
 
   // Skills
@@ -32,8 +33,10 @@ export const normalizationMaps = {
     gk: "Goalkeeper",
     defender: "Defender",
     df: "Defender",
-    midfielder: "Midfielder",
-    mf: "Midfielder",
+    "defensive midfielder": "Defensive Midfielder",
+    dm: "Defensive Midfielder",
+    "attacking midfielder": "Attacking Midfielder",
+    am: "Attacking Midfielder",
     forward: "Forward",
     fw: "Forward",
   } as Record<string, Player["position"]>,
