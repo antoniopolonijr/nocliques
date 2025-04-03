@@ -9,6 +9,7 @@ import { EntityMap, EntityType } from "@/app/types/entityTypes";
 import {
   entityDefaults,
   entityDefaultLengths,
+  DEFAULT_PLACEHOLDER,
 } from "@/app/constants/entityDefaults";
 import {
   abbreviations,
@@ -246,4 +247,12 @@ export const updateNumberOfEntities = <T extends EntityType>(
   }
   // Remove Entity objects if the selected number is less than the current count
   return entities.slice(0, newLength);
+};
+
+/**
+ * Retrieves the placeholder text based on the selected entity type.
+ * Falls back to an empty string if the entity type is not recognized.
+ */
+export const getPlaceholderText = (entityType: EntityType): string => {
+  return DEFAULT_PLACEHOLDER[entityType] || "";
 };

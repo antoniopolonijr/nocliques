@@ -32,7 +32,11 @@ import {
 } from "@/components/ui/alert-dialog";
 
 // Utility Functions
-import { formatEntity, parseImportData } from "@/app/utils/entityUtils";
+import {
+  formatEntity,
+  parseImportData,
+  getPlaceholderText,
+} from "@/app/utils/entityUtils";
 
 // Types
 import { EntityType, EntityImportProps } from "@/app/types/entityTypes";
@@ -41,12 +45,10 @@ import { EntityType, EntityImportProps } from "@/app/types/entityTypes";
  * EntityImport Component
  * @param entityType - The type of entity to import
  * @param setEntities - Function to update the list of entities
- * @param setIsImporting - Function to set the import state
  */
 export default function EntityImport<T extends EntityType>({
   entityType,
   setEntities,
-  setIsImporting,
 }: EntityImportProps<T>) {
   // Format the entity type for display
   const { singular, plural, capitalizedSingular, capitalizedPlural } =
@@ -76,86 +78,58 @@ export default function EntityImport<T extends EntityType>({
 
     // Update the state with the new entities
     setEntities(newEntities); // Update the entities list in the state
-    setIsImporting(false); // Hide the import modal
     setImportText(""); // Clear the import text field
-  };
-
-  // Clear the import text
-  const handleClearImport = () => {
-    setImportText("");
   };
 
   /**
    * Render the EntityImport component
    */
   return (
-    <section
-      aria-label={`Import ${capitalizedPlural} Section`}
-      className="flex flex-col gap-6 p-4 pt-0 sm:p-6 sm:pt-0"
-    >
-      <Label
-        className="text-sm text-zinc-500 dark:text-zinc-400 font-normal"
-        htmlFor={`import-${plural}`}
-      >
-        Insert or paste a list of {capitalizedPlural} with one {singular} per
-        line. Optionally, add other fields separated by commas if applicable.
-        Invalid entries will use default values.
-      </Label>
-      <Textarea
-        placeholder={
-          entityType === `Players` // Placeholder text for Players
-            ? `Ronaldo\nRonaldo, FORWARD\nRonaldo, Forward, High\nRonaldo, fw, h`
-            : entityType === `Teams` // Placeholder text for Teams
-            ? `Real Madrid\nBarcelona`
-            : "" // Default placeholder text
-        }
-        rows={6}
-        id={`import-${plural}`}
-        name={`import-${plural}`}
-        aria-label={`Import ${capitalizedPlural} Textarea`}
-        value={importText}
-        onChange={handleImportChange}
-      />
-      <div className="flex gap-2 items-center justify-between">
-        {/* Clear the import text button */}
-        <Button
-          type="button"
-          aria-label="Clear Import Text"
-          variant="outline"
-          onClick={handleClearImport}
-        >
-          Clear
-        </Button>
-
-        {/* This button triggers an alert dialog to confirm the import */}
-        {/* The alert dialog contains a message and two buttons to confirm or cancel the import */}
-        <AlertDialog>
-          <AlertDialogTrigger asChild>
-            {/* Import button */}
-            <Button variant="default">Import {capitalizedPlural}</Button>
-          </AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-              <AlertDialogDescription>
-                This action cannot be undone. Confirming the import will
-                overwrite your existing list of {capitalizedPlural}.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              {/* Cancel button */}
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              {/* Confirm button */}
-              <AlertDialogAction
-                onClick={handleConfirmImport}
-                aria-label={`Confirm Import ${capitalizedPlural}`}
+    <section aria-label={`Import ${capitalizedPlural} Section`}>
+      <AlertDialog>
+        <AlertDialogTrigger asChild>
+          <Button variant="secondary">Import {capitalizedPlural}</Button>
+        </AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Import {capitalizedPlural}</AlertDialogTitle>
+            <AlertDialogDescription>
+              <Label
+                className="text-sm text-zinc-500 dark:text-zinc-400 font-normal"
+                htmlFor={`import-${plural}`}
               >
-                Confirm Import
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
-      </div>
+                Insert or paste a list of {capitalizedPlural} with one{" "}
+                {singular} per line. Optionally, add other fields separated by
+                commas if applicable. Invalid entries will use default values.
+              </Label>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <section className="flex flex-col gap-4">
+            <Textarea
+              placeholder={getPlaceholderText(entityType)}
+              rows={6}
+              id={`import-${plural}`}
+              name={`import-${plural}`}
+              aria-label={`Import ${capitalizedPlural} Textarea`}
+              value={importText}
+              onChange={handleImportChange}
+            />
+            <p className="text-sm text-zinc-500 dark:text-zinc-400 font-normal">
+              This action cannot be undone. Confirming the import will overwrite
+              your existing list of {capitalizedPlural}.
+            </p>
+          </section>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleConfirmImport}
+              aria-label={`Confirm Import ${capitalizedPlural}`}
+            >
+              Confirm Import
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </section>
   );
 }

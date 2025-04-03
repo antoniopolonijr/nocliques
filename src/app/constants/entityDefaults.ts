@@ -28,6 +28,15 @@ export const entityDefaultLengths: { [K in EntityType]: number } = {
   // NewEntityType: 10, // Example for a future entity
 };
 
+/**
+ * Default placeholder texts for different entity types.
+ * Ensures consistency and maintains DRY principles by avoiding inline ternary conditions.
+ */
+export const DEFAULT_PLACEHOLDER: Record<EntityType, string> = {
+  Players: `Ronaldo\nRonaldo, FORWARD\nRonaldo, Forward, High\nRonaldo, fw, h`,
+  Teams: `Real Madrid\nBarcelona`,
+};
+
 // Constant array to store Player Positions options
 export const playerPositions: Player["position"][] = [
   "Any",
