@@ -304,6 +304,7 @@ export default function EntityTable<T extends EntityType>({
                 {/* Add Entity button */}
                 <Button
                   type="button"
+                  variant="secondary"
                   onClick={handleAddEntity}
                   aria-label={`Add ${capitalizedSingular}`}
                 >

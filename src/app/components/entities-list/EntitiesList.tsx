@@ -62,7 +62,7 @@ export default function EntitiesList<T extends EntityType>({
           <div className="flex gap-2 items-center">
             <h3
               id={`${capitalizedPlural}-list-title`}
-              className="font-semibold leading-none tracking-tight"
+              className="font-semibold leading-none tracking-tight text-lg"
             >
               {capitalizedPlural}
             </h3>

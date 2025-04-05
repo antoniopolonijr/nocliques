@@ -133,29 +133,69 @@ export default function TeamGenerator() {
       </section>
 
       {/* Footer section with action buttons */}
-      <footer className="flex justify-center gap-4 items-center p-4 sm:p-6 pt-0 sm:pt-0">
-        {/* Edit Button */}
+      <footer
+        className={`flex flex-col sm:flex-row ${
+          isGenerated ? `sm:justify-between` : `sm:justify-center`
+        } gap-4 p-4 sm:p-6 pt-0 sm:pt-0`}
+      >
         {isGenerated && (
-          <Button
-            className="p-6 sm:text-lg"
-            aria-label="Edit Players and Teams"
-            type="button"
-            variant="secondary"
-            onClick={handleEdit}
-          >
-            Edit
-          </Button>
+          <div className="flex justify-center gap-4 items-center">
+            <Button
+              variant="secondary"
+              aria-label="Download Generated Teams"
+              type="button"
+            >
+              Download
+            </Button>
+            {/* <Button
+              variant="secondary"
+              aria-label="Print Generated Teams"
+              type="button"
+            >
+              Print
+            </Button> */}
+            <Button
+              variant="secondary"
+              aria-label="Copy Generated Teams"
+              type="button"
+            >
+              Copy
+            </Button>
+            <Button
+              variant="secondary"
+              aria-label="Share Generated Teams"
+              type="button"
+            >
+              Share
+            </Button>
+          </div>
         )}
 
-        {/* Generate teams button */}
-        <Button
-          className="p-6 sm:text-lg"
-          aria-label="Generate Teams"
-          type="button"
-          onClick={handleGenerateTeams}
-        >
-          {isGenerated ? "Generate New Teams" : "Generate Teams"}
-        </Button>
+        <div className="flex justify-center gap-4 items-center">
+          {/* Edit Button */}
+          {isGenerated && (
+            <Button
+              className="p-6 text-base sm:text-lg"
+              aria-label="Edit Players and Teams"
+              type="button"
+              variant="outline"
+              onClick={handleEdit}
+            >
+              Edit
+            </Button>
+          )}
+
+          {/* Generate teams button */}
+          <Button
+            className="p-6 text-base sm:text-lg"
+            aria-label="Generate Teams"
+            type="button"
+            variant="default"
+            onClick={handleGenerateTeams}
+          >
+            {isGenerated ? "Generate New Teams" : "Generate Teams"}
+          </Button>
+        </div>
       </footer>
     </section>
   );

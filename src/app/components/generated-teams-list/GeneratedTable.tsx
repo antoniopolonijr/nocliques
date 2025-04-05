@@ -54,7 +54,7 @@ export default function GeneratedTable({
               id={`generated-team-${index + 1}-${teamName
                 .replace(/\s+/g, "-")
                 .toLowerCase()}`}
-              className="font-semibold leading-none tracking-tight truncate"
+              className="font-semibold leading-none tracking-tight truncate text-lg"
             >
               {teamName}
             </h3>
@@ -66,7 +66,7 @@ export default function GeneratedTable({
           {/* Team Players Table */}
           <Table>
             <TableHeader>
-              <TableRow>
+              <TableRow className="text-base">
                 <TableHead>Subs</TableHead>
                 <TableHead>
                   <abbr
@@ -82,7 +82,7 @@ export default function GeneratedTable({
                 <TableHead>Name</TableHead>
               </TableRow>
             </TableHeader>
-            <TableBody>
+            <TableBody className="text-base">
               {/* Render substitution order */}
               {teamPlayers.map((player, index) => (
                 <TableRow
