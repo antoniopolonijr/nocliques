@@ -69,12 +69,13 @@ export default function GeneratedTable({
               <TableRow className="text-base">
                 <TableHead>Subs</TableHead>
                 <TableHead>
-                  <abbr
+                  <span
                     title="Position"
                     className="sm:hidden md:inline lg:hidden no-underline"
+                    aria-label="Position"
                   >
                     Pos
-                  </abbr>
+                  </span>
                   <span className="hidden sm:inline md:hidden lg:inline">
                     Position
                   </span>
