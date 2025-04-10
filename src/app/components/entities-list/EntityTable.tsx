@@ -123,7 +123,7 @@ export default function EntityTable<T extends EntityType>({
         <TableBody>
           {/* Rows for each entity */}
           {entities.map((entity, index) => (
-            <TableRow key={index} className="w-full">
+            <TableRow key={index} className="w-full border-0">
               {/* Editable input for Entity name */}
               <TableCell className="px-0.5 w-full">
                 <Input
@@ -280,7 +280,7 @@ export default function EntityTable<T extends EntityType>({
         </TableBody>
 
         <tfoot>
-          <TableRow className="border-t border-b-0 hover:bg-transparent w-full">
+          <TableRow className="border-0 border-t dark:border-zinc-800/50 hover:bg-transparent w-full">
             {/* Reset and Add Entity buttons */}
             <TableCell
               colSpan={Object.keys(entityDefaults[entityType]).length + 1}
