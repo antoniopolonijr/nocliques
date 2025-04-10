@@ -31,6 +31,17 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 // Types
 import {
@@ -88,8 +99,16 @@ export default function EntityTable<T extends EntityType>({
   const handleDeleteEntity = (index: number) =>
     setEntities((prev) => deleteEntity(prev, index));
 
-  const handleResetEntities = () =>
+  const handleResetEntities = () => {
     setEntities((prev) => resetEntities(prev, entityType));
+
+    // Scroll to the top of the list
+    setTimeout(() => {
+      document
+        .getElementById(`${capitalizedPlural}-list-title`)
+        ?.scrollIntoView({ behavior: "smooth" });
+    }, 400); // Delay the scroll until the DOM has settled
+  };
 
   /**
    * Render the EntityTable Component
@@ -98,6 +117,7 @@ export default function EntityTable<T extends EntityType>({
     <section
       aria-label={`${capitalizedPlural} Table Section`}
       className="flex flex-col gap-4 p-4 sm:p-6 pt-0 sm:pt-0"
+      id={`${capitalizedPlural} Table Section`}
     >
       <p
         id={`${plural}-table-instructions`}
@@ -290,14 +310,36 @@ export default function EntityTable<T extends EntityType>({
                 {/* Reset Entities Data button
                 - Hidden when has no entities */}
                 {entities.length > 0 ? (
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={handleResetEntities}
-                    aria-label={`Reset ${capitalizedPlural} Data`}
-                  >
-                    Reset
-                  </Button>
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button
+                        type="button"
+                        variant="destructive"
+                        aria-label={`Reset ${capitalizedPlural} Data`}
+                      >
+                        Reset
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          This action cannot be undone. Confirming this action
+                          will reset your existing list of {plural} to default
+                          values.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={handleResetEntities}
+                          aria-label={`Confirm Reset ${capitalizedPlural} Data`}
+                        >
+                          Confirm Reset
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
                 ) : (
                   <span></span> // Keeps layout consistent when hidden
                 )}

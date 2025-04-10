@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/table";
 
 // Types
-import { Player, GeneratedTableProps } from "@/app/types/entityTypes";
+import { GeneratedTableProps } from "@/app/types/entityTypes";
 
 // Utility Functions
 import { getAbbreviation } from "@/app/utils/entityUtils";
