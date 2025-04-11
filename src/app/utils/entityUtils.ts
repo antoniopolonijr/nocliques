@@ -16,6 +16,12 @@ import {
   normalizationMaps,
 } from "@/app/constants/abbreviations";
 
+// Ensure abbreviations is typed as Record<string, string>
+const typedAbbreviations: Record<
+  string,
+  Record<string, string>
+> = abbreviations;
+
 /**
  * Utility function to create a default entity based on its type.
  * @param entityType - The type of entity to create.
@@ -78,10 +84,13 @@ export const formatEntity = (entityType: string) => {
 /**
  * Function that returns the corresponding abbreviation or the original value if there is no abbreviation
  * @param value - The value to abbreviate.
- * @returns The abbreviation or the original value.
+  return typedAbbreviations[value] || value;
  */
 export function getAbbreviation(value: string): string {
-  return abbreviations[value] || value;
+  const category = Object.keys(typedAbbreviations).find((key) =>
+    typedAbbreviations[key].hasOwnProperty(value)
+  );
+  return category ? typedAbbreviations[category][value] : value;
 }
 
 /**
