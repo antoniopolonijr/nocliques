@@ -27,7 +27,14 @@ export default function FieldsLegendPlayers() {
       <PopoverContent className="text-sm text-zinc-500 dark:text-zinc-400 text-start">
         {/* Fields Summary */}
         <h4 className="font-medium text-zinc-600 dark:text-zinc-300">Fields</h4>
-        <p className="font-semibold">Name, Position, Skill</p>
+        {Object.entries(entityDefaults.Players).map(
+          ([fields], index, array) => (
+            <span key={fields} className="font-semibold">
+              {fields.charAt(0).toUpperCase() + fields.slice(1)}
+              {index < array.length - 1 && ", "}
+            </span>
+          )
+        )}
 
         {/* Position Abbreviations */}
         <div className="mt-2">
