@@ -57,19 +57,20 @@ export default function GeneratedTeamsList({
       <GeneratedTable generatedTeams={generatedTeams} />
 
       {/* Footer Section with Ledend for Abbreviations */}
-      <footer className="flex p-4 sm:p-6 pt-0 sm:pt-0">
-        <div className="text-sm text-zinc-500 dark:text-zinc-400 text-start">
-          <p className="font-semibold">Legend:</p>
-          <p>Subs = Substitution Order</p>
-          <div className="sm:hidden md:inline lg:hidden">
-            <span>Pos = Position</span>
-            {Object.entries(positionLegend).map(([abbr, full]) => (
-              <p key={abbr}>
+      <footer className="p-4 sm:p-6 pt-0 sm:pt-0 text-sm text-zinc-500 dark:text-zinc-400 text-start">
+        <h4 className="font-semibold">Legend:</h4>
+        <ul className="flex flex-col">
+          <li>Subs = Substitution Order</li>
+          <li className="sm:hidden md:inline lg:hidden">Pos = Position</li>
+          {/* Display position legend */}
+          {Object.entries(positionLegend)
+            .filter(([abbr]) => abbr !== "Any")
+            .map(([abbr, full]) => (
+              <li className="sm:hidden md:inline lg:hidden" key={abbr}>
                 {abbr} = {full}
-              </p>
+              </li>
             ))}
-          </div>
-        </div>
+        </ul>
       </footer>
     </section>
   );
