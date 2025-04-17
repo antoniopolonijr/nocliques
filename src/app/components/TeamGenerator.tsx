@@ -19,6 +19,7 @@ import { Button } from "@/components/ui/button";
 
 // Utility Functions
 import { initializeEntities } from "@/app/utils/entityUtils";
+import { generateBalancedTeams } from "@/app/utils/teamGeneratorUtils";
 
 // Types
 import { Player, Team, GeneratedTeams } from "@/app/types/entityTypes";
@@ -45,6 +46,9 @@ export default function TeamGenerator() {
   // Control visibility of generated teams section
   const [isGenerated, setIsGenerated] = useState(false);
 
+  // State to store randomized teams
+  const [generatedTeams, setGeneratedTeams] = useState<GeneratedTeams>({});
+
   /**
    * Reset all data to default values
    */
@@ -55,42 +59,13 @@ export default function TeamGenerator() {
   }
 
   /**
-   * Example of randomized Teams functions for development only
-   * TODO: In the future implement functions to generate teams based on skill and position
+   * Generate teams based on player and team inputs
+   * The function uses the generateBalancedTeams function to create balanced teams
    */
-
-  // State to store randomized teams
-  const [generatedTeams, setGeneratedTeams] = useState<GeneratedTeams>({});
-
-  /**
-   * Function to shuffle an array using the Fisher-Yates algorithm.
-   * @param array - The array to be shuffled.
-   * @returns A new shuffled array.
-   */
-  const shuffleArray = <T,>(array: T[]): T[] => {
-    return [...array].sort(() => Math.random() - 0.5);
-  };
-
-  /**
-   * Function to distribute players into teams randomly.
-   * Ensures players are evenly assigned across all teams.
-   */
-  const handleGenerateTeams = (): void => {
-    if (teams.length === 0 || players.length === 0) return;
-
-    const shuffledPlayers = shuffleArray(players);
-    const teamsMap: GeneratedTeams = Object.fromEntries(
-      teams.map((team) => [team.name, []])
-    );
-
-    shuffledPlayers.forEach((player, index) => {
-      const teamName = teams[index % teams.length].name;
-      teamsMap[teamName].push(player);
-    });
-
-    setGeneratedTeams(teamsMap);
+  function handleGenerateTeams(): void {
+    setGeneratedTeams(generateBalancedTeams(players, teams));
     setIsGenerated(true);
-  };
+  }
 
   /**
    * Render the TeamGenerator component
