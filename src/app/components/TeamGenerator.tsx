@@ -16,10 +16,14 @@ import { useState } from "react";
 
 // UI Components
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 
 // Utility Functions
 import { initializeEntities } from "@/app/utils/entityUtils";
-import { generateBalancedTeams } from "@/app/utils/teamGeneratorUtils";
+import {
+  generateBalancedTeams,
+  formatTeamsForCopy,
+} from "@/app/utils/teamGeneratorUtils";
 
 // Types
 import { Player, Team, GeneratedTeams } from "@/app/types/entityTypes";
@@ -49,6 +53,12 @@ export default function TeamGenerator() {
   // State to store randomized teams
   const [generatedTeams, setGeneratedTeams] = useState<GeneratedTeams>({});
 
+  // State to store the timestamp of when the teams were generated
+  const [generatedAt, setGeneratedAt] = useState<Date | null>(null);
+
+  // Toast notification
+  const { toast } = useToast();
+
   /**
    * Edit teams and players
    */
@@ -65,10 +75,26 @@ export default function TeamGenerator() {
    */
   function handleGenerateTeams(): void {
     setGeneratedTeams(generateBalancedTeams(players, teams));
+    setGeneratedAt(new Date()); // Stores the date at the time of generation
     setIsGenerated(true);
     document
       .getElementById("main-section")
       ?.scrollIntoView({ behavior: "smooth" });
+  }
+
+  /**
+   * Copies formatted team data to clipboard
+   */
+  async function handleCopy(): Promise<void> {
+    const formatted = formatTeamsForCopy(generatedTeams, generatedAt);
+    try {
+      await navigator.clipboard.writeText(formatted);
+      toast({
+        description: "Generated Teams Copied!",
+      });
+    } catch (err) {
+      alert("Failed to copy. Please try again.");
+    }
   }
 
   /**
@@ -126,7 +152,10 @@ export default function TeamGenerator() {
             className="p-4 sm:p-6 pt-0 sm:pt-0"
           >
             <div className="min-w-[280px] w-full">
-              <GeneratedTeamsList generatedTeams={generatedTeams} />
+              <GeneratedTeamsList
+                generatedTeams={generatedTeams}
+                generatedAt={generatedAt}
+              />
             </div>
           </section>
         )}
@@ -147,20 +176,16 @@ export default function TeamGenerator() {
             >
               Download
             </Button>
-            {/* <Button
-              variant="secondary"
-              aria-label="Print Generated Teams"
-              type="button"
-            >
-              Print
-            </Button> */}
+
             <Button
               variant="secondary"
               aria-label="Copy Generated Teams"
               type="button"
+              onClick={handleCopy}
             >
               Copy
             </Button>
+
             <Button
               variant="secondary"
               aria-label="Share Generated Teams"

@@ -84,6 +84,7 @@ export interface GeneratedTeams {
 // Props for the GeneratedTeamsListProps component
 export interface GeneratedTeamsListProps {
   generatedTeams: GeneratedTeams;
+  generatedAt: Date | null;
 }
 
 // Props for the GeneratedTableProps component
