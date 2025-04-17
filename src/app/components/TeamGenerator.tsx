@@ -197,7 +197,7 @@ export default function TeamGenerator() {
           N<Icon className="inline" iconNode={soccerBall} />
           Cliques
         </h2>
-        <p className="text-center max-w-prose mx-auto">
+        <p className="text-center max-w-prose mx-auto text-zinc-500 dark:text-zinc-400">
           NoCliques is a team generator app designed to create fair and balanced
           teams avoiding the famous "cliques".
         </p>

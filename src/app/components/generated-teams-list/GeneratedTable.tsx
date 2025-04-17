@@ -91,14 +91,14 @@ export default function GeneratedTable({
                   className="w-full text-start dark:border-zinc-800/50"
                 >
                   {/* Substitution Order - Displayed as "1º", "2º", etc. */}
-                  <TableCell>
+                  <TableCell className="text-zinc-500 dark:text-zinc-400">
                     {player.position === "Goalkeeper"
                       ? "-"
                       : `${player.substitutionOrder}º`}
                   </TableCell>
 
                   {/* Player Position - Abbreviation on smaller screens */}
-                  <TableCell className="whitespace-nowrap">
+                  <TableCell className="whitespace-nowrap text-zinc-500 dark:text-zinc-400">
                     <span
                       title={player.position}
                       aria-label={player.position}
