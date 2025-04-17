@@ -115,8 +115,8 @@ export default function EntityImport<T extends EntityType>({
               onChange={handleImportChange}
             />
             <p className="text-sm text-zinc-500 dark:text-zinc-400 font-normal">
-              This action cannot be undone. Confirming the import will overwrite
-              your existing list of {capitalizedPlural}.
+              * This action cannot be undone. Confirming the import will
+              overwrite your existing list of {capitalizedPlural}.
             </p>
           </section>
           <AlertDialogFooter>
