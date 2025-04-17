@@ -15,6 +15,9 @@
 // React Hooks
 import { useState } from "react";
 
+// Icons
+import { Import } from "lucide-react";
+
 // UI Components
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -106,7 +109,17 @@ export default function EntityImport<T extends EntityType>({
     <section aria-label={`Import ${capitalizedPlural} Section`}>
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <Button variant="secondary">Import {capitalizedPlural}</Button>
+          <Button
+            variant="secondary"
+            aria-label={`Import ${capitalizedPlural}`}
+          >
+            <span className="inline sm:hidden md:inline lg:hidden">
+              <Import className="inline" /> Import
+            </span>
+            <span className="hidden sm:inline md:hidden lg:inline">
+              <Import className="inline" /> Import {capitalizedPlural}
+            </span>
+          </Button>
         </AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>

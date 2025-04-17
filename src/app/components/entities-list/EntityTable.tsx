@@ -13,6 +13,9 @@
  * Import dependencies
  */
 
+// Icons
+import { RefreshCcw, Plus, Trash2 } from "lucide-react";
+
 // UI Components
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -288,11 +291,13 @@ export default function EntityTable<T extends EntityType>({
                     entity.name || `${index + 1}`
                   }`}
                 >
-                  {/* Display "Delete" on small screens and "X" on larger screens */}
-                  <abbr
-                    title="Delete"
-                    className="no-underline sm:after:content-['Delete'] after:content-['X']"
-                  ></abbr>
+                  {/* Display "Trash Icon" on small screens and "Delete" on larger screens */}
+                  <span className="inline sm:hidden md:inline lg:hidden">
+                    <Trash2 className="inline" />
+                  </span>
+                  <span className="hidden sm:inline md:hidden lg:inline">
+                    <Trash2 className="inline" /> Delete
+                  </span>
                 </Button>
               </TableCell>
             </TableRow>
@@ -317,6 +322,7 @@ export default function EntityTable<T extends EntityType>({
                         variant="destructive"
                         aria-label={`Reset ${capitalizedPlural} Data`}
                       >
+                        <RefreshCcw />
                         Reset
                       </Button>
                     </AlertDialogTrigger>
@@ -350,7 +356,7 @@ export default function EntityTable<T extends EntityType>({
                   onClick={handleAddEntity}
                   aria-label={`Add ${capitalizedSingular}`}
                 >
-                  Add {capitalizedSingular}
+                  <Plus className="inline" /> {capitalizedSingular}
                 </Button>
               </div>
             </TableCell>

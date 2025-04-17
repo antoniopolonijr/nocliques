@@ -14,6 +14,10 @@
 // React Hooks
 import { useState, useEffect, useRef } from "react";
 
+// Icons
+import { Pencil, Download, Share2, Copy, Icon } from "lucide-react";
+import { soccerBall, soccerPitch } from "@lucide/lab";
+
 // Capture DOM as image
 import html2canvas from "html2canvas";
 
@@ -190,7 +194,8 @@ export default function TeamGenerator() {
           id="team-generator-title"
           className="text-4xl font-bold text-center"
         >
-          NoCliques
+          N<Icon className="inline" iconNode={soccerBall} />
+          Cliques
         </h2>
         <p className="text-center max-w-prose mx-auto">
           NoCliques is a team generator app designed to create fair and balanced
@@ -242,18 +247,19 @@ export default function TeamGenerator() {
 
       {/* Footer section with action buttons */}
       <footer
-        className={`flex flex-col sm:flex-row ${
+        className={`flex flex-col md:flex-row ${
           isGenerated ? `sm:justify-between` : `sm:justify-center`
         } gap-4 p-4 sm:p-6 pt-0 sm:pt-0`}
       >
         {isGenerated && (
-          <div className="flex justify-center gap-4 items-center">
+          <div className="flex justify-center gap-1 sm:gap-4 items-center">
             <Button
               variant="secondary"
               aria-label="Download Generated Teams"
               type="button"
               onClick={handleDownload}
             >
+              <Download />
               Download
             </Button>
 
@@ -263,6 +269,7 @@ export default function TeamGenerator() {
               type="button"
               onClick={handleCopy}
             >
+              <Copy />
               Copy
             </Button>
 
@@ -272,34 +279,43 @@ export default function TeamGenerator() {
               type="button"
               onClick={handleShare}
             >
-              Share
+              <Share2 /> Share
             </Button>
           </div>
         )}
 
-        <div className="flex justify-center gap-4 items-center">
+        <div className="flex justify-center gap-3 sm:gap-4 items-center">
           {/* Edit Button */}
           {isGenerated && (
             <Button
-              className="p-6 text-base sm:text-lg"
+              className="py-6 text-base sm:text-lg"
               aria-label="Edit Players and Teams"
               type="button"
               variant="outline"
               onClick={handleEdit}
             >
+              <Pencil />
               Edit
             </Button>
           )}
 
           {/* Generate teams button */}
           <Button
-            className="p-6 text-base sm:text-lg"
+            className="py-6 text-base sm:text-lg"
             aria-label="Generate Teams"
             type="button"
             variant="default"
             onClick={handleGenerateTeams}
           >
-            {isGenerated ? "Generate New Teams" : "Generate Teams"}
+            {isGenerated ? (
+              <>
+                <Icon iconNode={soccerPitch} /> Generate New Teams
+              </>
+            ) : (
+              <>
+                <Icon iconNode={soccerPitch} /> Generate Teams
+              </>
+            )}
           </Button>
         </div>
       </footer>
