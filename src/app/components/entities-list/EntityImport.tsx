@@ -98,9 +98,9 @@ export default function EntityImport<T extends EntityType>({
                 className="text-sm text-zinc-500 dark:text-zinc-400 font-normal"
                 htmlFor={`import-${plural}`}
               >
-                Insert or paste a list of {capitalizedPlural} with one{" "}
-                {singular} per line. Optionally, add other fields separated by
-                commas if applicable. Invalid entries will use default values.
+                Insert or paste a list of {plural} with one {singular} per line.
+                Optionally, add other fields separated by commas if applicable.
+                Invalid entries will use default values.
               </Label>
             </AlertDialogDescription>
           </AlertDialogHeader>
@@ -116,7 +116,7 @@ export default function EntityImport<T extends EntityType>({
             />
             <p className="text-sm text-zinc-500 dark:text-zinc-400 font-normal">
               * This action cannot be undone. Confirming the import will
-              overwrite your existing list of {capitalizedPlural}.
+              overwrite your existing list of {plural}.
             </p>
           </section>
           <AlertDialogFooter>
