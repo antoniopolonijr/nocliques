@@ -88,7 +88,7 @@ export default function GeneratedTable({
               {teamPlayers.map((player, index) => (
                 <TableRow
                   key={`${player.name}-${index}`}
-                  className="w-full text-start"
+                  className="w-full text-start dark:border-zinc-800/50"
                 >
                   {/* Substitution Order - Displayed as "1º", "2º", etc. */}
                   <TableCell>
