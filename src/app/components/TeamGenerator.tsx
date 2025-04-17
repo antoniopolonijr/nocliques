@@ -25,8 +25,8 @@ import { generateBalancedTeams } from "@/app/utils/teamGeneratorUtils";
 import { Player, Team, GeneratedTeams } from "@/app/types/entityTypes";
 
 // Components
-import EntitiesList from "@/app/components/entities-list/EntitiesList";
 import GeneratedTeamsList from "@/app/components/generated-teams-list/GeneratedTeamsList";
+import EntitiesList from "@/app/components/entities-list/EntitiesList";
 
 /**
  * TeamGenerator component
@@ -50,12 +50,13 @@ export default function TeamGenerator() {
   const [generatedTeams, setGeneratedTeams] = useState<GeneratedTeams>({});
 
   /**
-   * Reset all data to default values
+   * Edit teams and players
    */
-  function handleResetDefault(): void {
+  function handleEdit(): void {
     setIsGenerated(false);
-    setPlayers(initializeEntities("Players"));
-    setTeams(initializeEntities("Teams"));
+    document
+      .getElementById("main-section")
+      ?.scrollIntoView({ behavior: "smooth" });
   }
 
   /**
@@ -65,6 +66,9 @@ export default function TeamGenerator() {
   function handleGenerateTeams(): void {
     setGeneratedTeams(generateBalancedTeams(players, teams));
     setIsGenerated(true);
+    document
+      .getElementById("main-section")
+      ?.scrollIntoView({ behavior: "smooth" });
   }
 
   /**
@@ -73,13 +77,13 @@ export default function TeamGenerator() {
   return (
     <section
       aria-labelledby="team-generator-title"
-      className="bg-white text-zinc-950 dark:bg-zinc-950 dark:text-zinc-50 w-full max-w-5xl mx-auto"
+      className="bg-white text-zinc-950 dark:bg-zinc-950 dark:text-zinc-50 w-full max-w-5xl mx-auto text-center sm:text-left"
     >
       {/* Header */}
-      <header className="flex flex-col space-y-3 p-4 sm:p-6">
+      <header className="flex flex-col space-y-3 p-6 sm:p-8">
         <h2
           id="team-generator-title"
-          className="text-3xl font-bold text-center"
+          className="text-4xl font-bold text-center"
         >
           NoCliques
         </h2>
@@ -88,61 +92,69 @@ export default function TeamGenerator() {
           teams avoiding the famous "cliques".
         </p>
       </header>
-      {/* Input Section */}
-      <section
-        aria-labelledby="input-section"
-        className="md:flex md:gap-6 p-4 sm:p-6 sm:pt-0 pt-0 space-y-4 sm:space-y-6 md:space-y-0"
-      >
-        {/* Player Input */}
-        <div className="min-w-[280px] w-full md:w-2/3">
-          <EntitiesList // Component for player input
-            entityType="Players" // Type of entity
-            entities={players} // List of entities
-            setEntities={setPlayers} // Function to update entities
-          />
-        </div>
+      <section id="main-section">
+        {/* Input Section */}
+        {!isGenerated && (
+          <section
+            aria-labelledby="input-section"
+            className="md:flex md:gap-6 p-4 sm:p-6 sm:pt-0 pt-0 space-y-4 sm:space-y-6 md:space-y-0"
+          >
+            {/* Player Input */}
+            <div className="min-w-[280px] w-full md:w-2/3">
+              <EntitiesList // Component for player input
+                entityType="Players" // Type of entity
+                entities={players} // List of entities
+                setEntities={setPlayers} // Function to update entities
+              />
+            </div>
 
-        {/* Team Input */}
-        <div className="min-w-[280px] w-full md:w-1/3">
-          <EntitiesList // Component for team input
-            entityType="Teams" // Type of entity
-            entities={teams} // List of entities
-            setEntities={setTeams} // Function to update entities
-          />
-        </div>
-      </section>
+            {/* Team Input */}
+            <div className="min-w-[280px] w-full md:w-1/3">
+              <EntitiesList // Component for team input
+                entityType="Teams" // Type of entity
+                entities={teams} // List of entities
+                setEntities={setTeams} // Function to update entities
+              />
+            </div>
+          </section>
+        )}
 
-      {/* Output Section */}
-      <section
-        aria-labelledby="output-section"
-        className="p-4 sm:p-6 pt-0 sm:pt-0"
-      >
-        <div className="min-w-[280px] w-full">
-          {isGenerated && (
-            <GeneratedTeamsList generatedTeams={generatedTeams} />
-          )}
-        </div>
+        {/* Output Section */}
+        {isGenerated && (
+          <section
+            aria-labelledby="output-section"
+            className="p-4 sm:p-6 pt-0 sm:pt-0"
+          >
+            <div className="min-w-[280px] w-full">
+              <GeneratedTeamsList generatedTeams={generatedTeams} />
+            </div>
+          </section>
+        )}
       </section>
 
       {/* Footer section with action buttons */}
-      <footer className="flex justify-between items-center p-4 sm:p-6 pt-0 sm:pt-0">
-        {/* Reset button */}
-        <Button
-          aria-label="Reset to default"
-          type="button"
-          variant="secondary"
-          onClick={handleResetDefault}
-        >
-          Reset
-        </Button>
+      <footer className="flex justify-center gap-4 items-center p-4 sm:p-6 pt-0 sm:pt-0">
+        {/* Edit Button */}
+        {isGenerated && (
+          <Button
+            className="p-6 sm:text-lg"
+            aria-label="Edit Players and Teams"
+            type="button"
+            variant="secondary"
+            onClick={handleEdit}
+          >
+            Edit
+          </Button>
+        )}
 
         {/* Generate teams button */}
         <Button
+          className="p-6 sm:text-lg"
           aria-label="Generate Teams"
           type="button"
           onClick={handleGenerateTeams}
         >
-          Generate Teams
+          {isGenerated ? "Generate New Teams" : "Generate Teams"}
         </Button>
       </footer>
     </section>

@@ -49,7 +49,7 @@ export default function GeneratedTable({
           className="rounded-xl border border-zinc-200 bg-white text-zinc-950 shadow dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-50 flex flex-col p-4 sm:p-6"
         >
           {/* Team Header */}
-          <header className="flex items-center justify-start gap-2 pb-4">
+          <header className="flex items-center justify-center gap-2 pb-4">
             <h3
               id={`generated-team-${index + 1}-${teamName
                 .replace(/\s+/g, "-")
@@ -85,11 +85,14 @@ export default function GeneratedTable({
             <TableBody>
               {/* Render substitution order */}
               {teamPlayers.map((player, index) => (
-                <TableRow key={`${player.name}-${index}`} className="w-full">
+                <TableRow
+                  key={`${player.name}-${index}`}
+                  className="w-full text-start"
+                >
                   {/* Substitution Order - Displayed as "1º", "2º", etc. */}
                   <TableCell>
                     {player.position === "Goalkeeper"
-                      ? ""
+                      ? "-"
                       : `${player.substitutionOrder}º`}
                   </TableCell>
 
