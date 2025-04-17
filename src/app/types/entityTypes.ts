@@ -64,8 +64,6 @@ export interface EntityImportProps<T extends EntityType> {
   entityType: T;
   // Function to update the entities list
   setEntities: Dispatch<SetStateAction<EntityMap[T][]>>;
-  // Function to toggles the import section visibility
-  setIsImporting: (isImporting: boolean) => void;
 }
 
 // Props for the EntityTableProps component

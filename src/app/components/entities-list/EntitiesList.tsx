@@ -1,5 +1,3 @@
-"use client";
-
 /**
  * EntitiesList Component
  * This component allows users to input and manage a list of entities.
@@ -13,11 +11,7 @@
  * Import dependencies
  */
 
-// React Hooks
-import { useState } from "react";
-
 // UI Components
-import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -51,14 +45,6 @@ export default function EntitiesList<T extends EntityType>({
   const { singular, plural, capitalizedSingular, capitalizedPlural } =
     formatEntity(entityType);
 
-  // State to control whether the import section is visible
-  const [isImporting, setIsImporting] = useState(false);
-
-  // Toggles the import section visibility
-  const handleImportToggle = () => {
-    setIsImporting((prev) => !prev);
-  };
-
   // Updates the list of Entities when the dropdown value changes.
   const handleUpdateNumberOfEntities = (newLength: number) =>
     setEntities((prev) => updateNumberOfEntities(prev, newLength, entityType));
@@ -82,76 +68,44 @@ export default function EntitiesList<T extends EntityType>({
             </h3>
 
             {/* Dropdown to select the number of Entities */}
-            {/* - If isImporting is true, hide the Dropdown */}
-            {!isImporting && (
-              <Select
-                name={`number-of-${plural}`}
-                value={entities.length.toString()}
-                onValueChange={(value) =>
-                  handleUpdateNumberOfEntities(parseInt(value, 10))
-                }
+            <Select
+              name={`number-of-${plural}`}
+              value={entities.length.toString()}
+              onValueChange={(value) =>
+                handleUpdateNumberOfEntities(parseInt(value, 10))
+              }
+            >
+              <SelectTrigger
+                aria-label={`Number of ${capitalizedPlural}`}
+                id={`number-of-${plural}`}
               >
-                <SelectTrigger
-                  aria-label={`Number of ${capitalizedPlural}`}
-                  id={`number-of-${plural}`}
-                >
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {/* Generate selectable numbers from 1 to 100 dynamically */}
-                  {Array.from({ length: 100 }, (_, i) => (
-                    <SelectItem
-                      key={i + 1}
-                      value={(i + 1).toString()}
-                      aria-label={`Select ${i + 1} ${capitalizedPlural}`}
-                    >
-                      {i + 1}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            )}
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {/* Generate selectable numbers from 1 to 100 dynamically */}
+                {Array.from({ length: 100 }, (_, i) => (
+                  <SelectItem
+                    key={i + 1}
+                    value={(i + 1).toString()}
+                    aria-label={`Select ${i + 1} ${capitalizedPlural}`}
+                  >
+                    {i + 1}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
-          {isImporting ? (
-            <Button
-              aria-label={`Cancel Import ${capitalizedPlural}`}
-              type="button"
-              variant="secondary"
-              onClick={handleImportToggle}
-            >
-              Cancel Import
-            </Button>
-          ) : (
-            <Button
-              aria-label={`Import ${capitalizedPlural}`}
-              type="button"
-              variant="secondary"
-              onClick={handleImportToggle}
-            >
-              Import {capitalizedPlural}
-            </Button>
-          )}
+
+          <EntityImport entityType={entityType} setEntities={setEntities} />
         </div>
       </header>
 
-      {/* 
-        Renders either the Import Entities or Entities Table section based on "isImporting":  
-        - true: Shows the import area with textarea and controls.  
-        - false: Displays the table for managing Entities.  
-      */}
-      {isImporting ? (
-        <EntityImport
-          entityType={entityType}
-          setEntities={setEntities}
-          setIsImporting={setIsImporting}
-        />
-      ) : (
-        <EntityTable
-          entityType={entityType}
-          entities={entities}
-          setEntities={setEntities}
-        />
-      )}
+      {/* Renders Entities Table section */}
+      <EntityTable
+        entityType={entityType}
+        entities={entities}
+        setEntities={setEntities}
+      />
     </section>
   );
 }
