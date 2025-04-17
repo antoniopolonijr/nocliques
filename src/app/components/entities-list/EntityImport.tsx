@@ -1,3 +1,5 @@
+"use client";
+
 /**
  * EntityImport Component
  * This component allows users to import a list of entities for a given entity type.
@@ -9,10 +11,11 @@
 /**
  * Import dependencies
  */
-"use client";
-// Import the useState hook from React
+
+// React Hooks
 import { useState } from "react";
-// Import the Button, Label and Textarea components from the UI library
+
+// UI Components
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -27,9 +30,11 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-// Import functions from the entityUtils file
+
+// Utility Functions
 import { formatEntity, parseImportData } from "@/app/utils/entityUtils";
-// Import types from the entityTypes file
+
+// Types
 import { EntityType, EntityImportProps } from "@/app/types/entityTypes";
 
 /**
@@ -38,7 +43,6 @@ import { EntityType, EntityImportProps } from "@/app/types/entityTypes";
  * @param setEntities - Function to update the list of entities
  * @param setIsImporting - Function to set the import state
  */
-
 export default function EntityImport<T extends EntityType>({
   entityType,
   setEntities,

@@ -66,3 +66,18 @@ export interface EntityTableProps<T extends EntityType> {
   // Function to update the entities list
   setEntities: Dispatch<SetStateAction<EntityMap[T][]>>;
 }
+
+// Generated Teams interface
+export interface GeneratedTeams {
+  [teamName: string]: Player[];
+}
+
+// Props for the GeneratedTeamsListProps component
+export interface GeneratedTeamsListProps {
+  generatedTeams: GeneratedTeams;
+}
+
+// Props for the GeneratedTableProps component
+export interface GeneratedTableProps {
+  generatedTeams: GeneratedTeams;
+}

@@ -1,27 +1,35 @@
-/**
- * TeamGenerator component
- * This component is responsible for generating teams based on player inputs.
- * It includes sections for player input, team input, and displaying the generated teams.
- */
-
-// Import dependencies
 "use client";
-// Import useState hook from React
+
+/**
+ * TeamGenerator Component
+ *
+ * This component manages player and team inputs, generates balanced teams, and
+ * displays the results. It also provides actions for resetting data and generating teams.
+ */
+
+/**
+ * Import dependencies
+ */
+
+// React Hooks
 import { useState } from "react";
-// Import Burron component from Button.tsx
+
+// UI Components
 import { Button } from "@/components/ui/button";
-// Import function from entityUtils.ts
+
+// Utility Functions
 import { initializeEntities } from "@/app/utils/entityUtils";
-// Import types from entityTypes.ts
-import { Player, Team } from "@/app/types/entityTypes";
-// Import EntitiesList and GeneratedTeamsList components
+
+// Types
+import { Player, Team, GeneratedTeams } from "@/app/types/entityTypes";
+
+// Components
 import EntitiesList from "@/app/components/entities-list/EntitiesList";
-import GeneratedTeamsList from "@/app/components/GeneratedTeamsList";
+import GeneratedTeamsList from "@/app/components/generated-teams-list/GeneratedTeamsList";
 
 /**
  * TeamGenerator component
  */
-
 export default function TeamGenerator() {
   /**
    * State for players and teams
@@ -34,6 +42,56 @@ export default function TeamGenerator() {
   );
   const [teams, setTeams] = useState<Team[]>(initializeEntities("Teams"));
 
+  // Control visibility of generated teams section
+  const [isGenerated, setIsGenerated] = useState(false);
+
+  /**
+   * Reset all data to default values
+   */
+  function handleResetDefault(): void {
+    setIsGenerated(false);
+    setPlayers(initializeEntities("Players"));
+    setTeams(initializeEntities("Teams"));
+  }
+
+  /**
+   * Example of randomized Teams functions for development only
+   * TODO: In the future implement functions to generate teams based on skill and position
+   */
+
+  // State to store randomized teams
+  const [generatedTeams, setGeneratedTeams] = useState<GeneratedTeams>({});
+
+  /**
+   * Function to shuffle an array using the Fisher-Yates algorithm.
+   * @param array - The array to be shuffled.
+   * @returns A new shuffled array.
+   */
+  const shuffleArray = <T,>(array: T[]): T[] => {
+    return [...array].sort(() => Math.random() - 0.5);
+  };
+
+  /**
+   * Function to distribute players into teams randomly.
+   * Ensures players are evenly assigned across all teams.
+   */
+  const handleGenerateTeams = (): void => {
+    if (teams.length === 0 || players.length === 0) return;
+
+    const shuffledPlayers = shuffleArray(players);
+    const teamsMap: GeneratedTeams = Object.fromEntries(
+      teams.map((team) => [team.name, []])
+    );
+
+    shuffledPlayers.forEach((player, index) => {
+      const teamName = teams[index % teams.length].name;
+      teamsMap[teamName].push(player);
+    });
+
+    setGeneratedTeams(teamsMap);
+    setIsGenerated(true);
+  };
+
   /**
    * Render the TeamGenerator component
    */
@@ -42,7 +100,7 @@ export default function TeamGenerator() {
       aria-labelledby="team-generator-title"
       className="bg-white text-zinc-950 dark:bg-zinc-950 dark:text-zinc-50 w-full max-w-5xl mx-auto"
     >
-      {/* Header section with title and description */}
+      {/* Header */}
       <header className="flex flex-col space-y-3 p-4 sm:p-6">
         <h2
           id="team-generator-title"
@@ -55,19 +113,22 @@ export default function TeamGenerator() {
           teams avoiding the famous "cliques".
         </p>
       </header>
-      {/* Input section for players and teams */}
+      {/* Input Section */}
       <section
         aria-labelledby="input-section"
-        className="lg:flex lg:gap-6 p-4 sm:p-6 sm:pt-0 pt-0 space-y-4 sm:space-y-6 lg:space-y-0"
+        className="md:flex md:gap-6 p-4 sm:p-6 sm:pt-0 pt-0 space-y-4 sm:space-y-6 md:space-y-0"
       >
-        <div className="min-w-[280px] w-full lg:w-2/3">
+        {/* Player Input */}
+        <div className="min-w-[280px] w-full md:w-2/3">
           <EntitiesList // Component for player input
             entityType="Players" // Type of entity
             entities={players} // List of entities
             setEntities={setPlayers} // Function to update entities
           />
         </div>
-        <div className="min-w-[280px] w-full lg:w-1/3">
+
+        {/* Team Input */}
+        <div className="min-w-[280px] w-full md:w-1/3">
           <EntitiesList // Component for team input
             entityType="Teams" // Type of entity
             entities={teams} // List of entities
@@ -75,26 +136,36 @@ export default function TeamGenerator() {
           />
         </div>
       </section>
-      {/* Output section for displaying generated teams */}
+
+      {/* Output Section */}
       <section
         aria-labelledby="output-section"
         className="p-4 sm:p-6 pt-0 sm:pt-0"
       >
-        <GeneratedTeamsList />
+        <div className="min-w-[280px] w-full">
+          {isGenerated && (
+            <GeneratedTeamsList generatedTeams={generatedTeams} />
+          )}
+        </div>
       </section>
+
       {/* Footer section with action buttons */}
       <footer className="flex justify-between items-center p-4 sm:p-6 pt-0 sm:pt-0">
         {/* Reset button */}
-        <Button aria-label="Reset" type="button" variant="secondary">
+        <Button
+          aria-label="Reset to default"
+          type="button"
+          variant="secondary"
+          onClick={handleResetDefault}
+        >
           Reset
         </Button>
+
         {/* Generate teams button */}
         <Button
           aria-label="Generate Teams"
           type="button"
-          onClick={() => {
-            console.log(players, teams); // todo: implement team generation
-          }}
+          onClick={handleGenerateTeams}
         >
           Generate Teams
         </Button>
