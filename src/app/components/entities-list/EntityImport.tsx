@@ -6,9 +6,10 @@
  * This component is used in the EntitiesList component.
  */
 
-// Import dependencies
+/**
+ * Import dependencies
+ */
 "use client";
-import * as React from "react";
 // Import the useState hook from React
 import { useState } from "react";
 // Import the Button, Label and Textarea components from the UI library

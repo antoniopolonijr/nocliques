@@ -12,8 +12,7 @@
 /**
  * Import dependencies
  */
-"use client";
-import * as React from "react";
+
 // Import the Button, Input, Select, and Table components from the UI library
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

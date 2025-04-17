@@ -6,7 +6,6 @@
 
 // Import dependencies
 "use client";
-import * as React from "react";
 // Import useState hook from React
 import { useState } from "react";
 // Import Burron component from Button.tsx

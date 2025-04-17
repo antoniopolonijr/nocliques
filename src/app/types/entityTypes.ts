@@ -5,6 +5,9 @@
  * This file can be extended to add more entity types and interfaces as needed.
  */
 
+// Import React types for TypeScript
+import { Dispatch, SetStateAction } from "react";
+
 // Defines the available entity types.
 export type EntityType = "Players" | "Teams"; // | "NewEntityType"; You can extend this easily by adding more entity types
 
@@ -41,7 +44,7 @@ export interface EntitiesListProps<T extends EntityType> {
   // List of entities to display
   entities: EntityMap[T][];
   // Function to update the entities list
-  setEntities: React.Dispatch<React.SetStateAction<EntityMap[T][]>>;
+  setEntities: Dispatch<SetStateAction<EntityMap[T][]>>;
 }
 
 // Props for the EntityImportProps component
@@ -49,7 +52,7 @@ export interface EntityImportProps<T extends EntityType> {
   // Type of entity (Players, Teams or any other future entity)
   entityType: T;
   // Function to update the entities list
-  setEntities: React.Dispatch<React.SetStateAction<EntityMap[T][]>>;
+  setEntities: Dispatch<SetStateAction<EntityMap[T][]>>;
   // Function to toggles the import section visibility
   setIsImporting: (isImporting: boolean) => void;
 }
@@ -61,5 +64,5 @@ export interface EntityTableProps<T extends EntityType> {
   // List of entities to display
   entities: EntityMap[T][];
   // Function to update the entities list
-  setEntities: React.Dispatch<React.SetStateAction<EntityMap[T][]>>;
+  setEntities: Dispatch<SetStateAction<EntityMap[T][]>>;
 }
