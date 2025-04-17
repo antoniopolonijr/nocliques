@@ -15,7 +15,7 @@ export function TeamGenerator() {
   return (
     <section
       aria-labelledby="team-generator-title"
-      className="bg-white text-zinc-950 dark:bg-zinc-950 dark:text-zinc-50 w-[530px] sm:w-full"
+      className="bg-white text-zinc-950 dark:bg-zinc-950 dark:text-zinc-50 w-[415px] sm:w-full"
     >
       {/* Header section with title and description */}
       <header className="flex flex-col space-y-3 p-6">
