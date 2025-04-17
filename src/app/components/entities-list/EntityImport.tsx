@@ -30,6 +30,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { useToast } from "@/hooks/use-toast";
 
 // Utility Functions
 import {
@@ -40,6 +41,9 @@ import {
 
 // Types
 import { EntityType, EntityImportProps } from "@/app/types/entityTypes";
+
+// Constants
+import { textLabel, fieldsLegend } from "@/app/constants/entityDefaults";
 
 /**
  * EntityImport Component
@@ -65,6 +69,9 @@ export default function EntityImport<T extends EntityType>({
   const handleImportChange = (event: React.ChangeEvent<HTMLTextAreaElement>) =>
     setImportText(event.target.value);
 
+  // Toast notification
+  const { toast } = useToast();
+
   /**
    * Handles the confirmation of imported data:
    * - Parses the import text.
@@ -73,6 +80,17 @@ export default function EntityImport<T extends EntityType>({
    */
   // This function processes the import data and updates the list of entities
   const handleConfirmImport = () => {
+    // Check if the import text is empty
+    if (!importText) {
+      // If empty, show an error message or a toast notification
+      toast({
+        description: `No data to import. Please provide a list of ${plural}.`,
+        title: "Import Error",
+        variant: "destructive",
+      });
+      return; // If empty, do nothing
+    }
+
     // Parse the imported text data and update the entities list
     const newEntities = parseImportData(importText, entityType);
 
@@ -99,8 +117,8 @@ export default function EntityImport<T extends EntityType>({
                 htmlFor={`import-${plural}`}
               >
                 Insert or paste a list of {plural} with one {singular} per line.
-                Optionally, add other fields separated by commas if applicable.
-                Invalid entries will use default values.
+                {textLabel[entityType]}
+                {fieldsLegend[entityType]?.()}
               </Label>
             </AlertDialogDescription>
           </AlertDialogHeader>
@@ -115,8 +133,9 @@ export default function EntityImport<T extends EntityType>({
               onChange={handleImportChange}
             />
             <p className="text-sm text-zinc-500 dark:text-zinc-400 font-normal">
-              * This action cannot be undone. Confirming the import will
-              overwrite your existing list of {plural}.
+              <span className="font-bold">Warning:</span> This action cannot be
+              undone. Confirming the import will overwrite your existing list of{" "}
+              {plural}.
             </p>
           </section>
           <AlertDialogFooter>

@@ -10,8 +10,14 @@
  * Import dependencies
  */
 
+// React
+import { JSX } from "react";
+
 // Types
 import { EntityMap, EntityType, Player } from "@/app/types/entityTypes";
+
+// Constants
+import FieldsLegendPlayers from "@/app/constants/FieldsLegendPlayers";
 
 // Default Entity Values
 // Provides a single source of truth for default values of each entity type.
@@ -30,11 +36,27 @@ export const entityDefaultLengths: { [K in EntityType]: number } = {
 
 /**
  * Default placeholder texts for different entity types.
- * Ensures consistency and maintains DRY principles by avoiding inline ternary conditions.
  */
 export const DEFAULT_PLACEHOLDER: Record<EntityType, string> = {
   Players: `Ronaldo\nRonaldo, FORWARD\nRonaldo, Forward, High\nRonaldo, fw, h`,
   Teams: `Real Madrid\nBarcelona`,
+};
+
+/**
+ * Label texts for different entity types.
+ */
+export const textLabel: Record<EntityType, string> = {
+  Players: ` Optionally, add other fields separated by commas if applicable.
+                Invalid entries will use default values. `,
+  Teams: "",
+};
+
+/**
+ * Fields legend for different entity types.
+ */
+export const fieldsLegend: Record<string, () => JSX.Element | null> = {
+  Players: () => <FieldsLegendPlayers />,
+  Teams: () => null,
 };
 
 // Constant array to store Player Positions options

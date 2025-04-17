@@ -11,6 +11,9 @@
 // Types
 import { GeneratedTeamsListProps } from "@/app/types/entityTypes";
 
+// Abbreviations
+import { positionLegend } from "@/app/constants/abbreviations";
+
 // Components
 import GeneratedTable from "@/app/components/generated-teams-list/GeneratedTable";
 
@@ -52,6 +55,22 @@ export default function GeneratedTeamsList({
 
       {/* Render Generated Teams Table */}
       <GeneratedTable generatedTeams={generatedTeams} />
+
+      {/* Footer Section with Ledend for Abbreviations */}
+      <footer className="flex p-4 sm:p-6 pt-0 sm:pt-0">
+        <div className="text-sm text-zinc-500 dark:text-zinc-400 text-start">
+          <p className="font-semibold">Legend:</p>
+          <p>Subs = Substitution Order</p>
+          <div className="sm:hidden md:inline lg:hidden">
+            <span>Pos = Position</span>
+            {Object.entries(positionLegend).map(([abbr, full]) => (
+              <p key={abbr}>
+                {abbr} = {full}
+              </p>
+            ))}
+          </div>
+        </div>
+      </footer>
     </section>
   );
 }
