@@ -54,7 +54,7 @@ export default function GeneratedTable({
               id={`generated-team-${index + 1}-${teamName
                 .replace(/\s+/g, "-")
                 .toLowerCase()}`}
-              className="font-semibold leading-none tracking-tight truncate text-lg"
+              className="font-semibold leading-none tracking-tight text-lg"
             >
               {teamName}
             </h3>
@@ -98,12 +98,13 @@ export default function GeneratedTable({
 
                   {/* Player Position - Abbreviation on smaller screens */}
                   <TableCell className="whitespace-nowrap">
-                    <abbr
+                    <span
                       title={player.position}
-                      className="sm:hidden md:inline lg:hidden no-underline"
+                      aria-label={player.position}
+                      className="sm:hidden md:inline lg:hidden"
                     >
                       {getAbbreviation(player.position)}
-                    </abbr>
+                    </span>
                     <span className="hidden sm:inline md:hidden lg:inline">
                       {player.position}
                     </span>
