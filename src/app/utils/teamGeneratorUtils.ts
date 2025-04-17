@@ -70,6 +70,17 @@ export function getSortedTeams(
 }
 
 /**
+ * Predefined sorting order for player positions.
+ */
+const POSITION_ORDER: Record<string, number> = {
+  Goalkeeper: 0,
+  Defender: 1,
+  Midfielder: 2,
+  Forward: 3,
+  Any: 4,
+};
+
+/**
  * Sorts players by their predefined position order.
  *
  * @param players - List of players to be sorted.
