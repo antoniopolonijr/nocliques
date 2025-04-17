@@ -94,7 +94,7 @@ export default function GeneratedTable({
                   </TableCell>
 
                   {/* Player Position - Abbreviation on smaller screens */}
-                  <TableCell>
+                  <TableCell className="whitespace-nowrap">
                     <abbr
                       title={player.position}
                       className="sm:hidden md:inline lg:hidden no-underline"
