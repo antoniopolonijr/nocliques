@@ -15,14 +15,14 @@ import { initializeEntities } from "@/app/utils/entityUtils";
 // Import types from entityTypes.ts
 import { Player, Team } from "@/app/types/entityTypes";
 // Import EntitiesList and GeneratedTeamsList components
-import { EntitiesList } from "./entities-list/EntitiesList";
-import { GeneratedTeamsList } from "./GeneratedTeamsList";
+import EntitiesList from "@/app/components/entities-list/EntitiesList";
+import GeneratedTeamsList from "@/app/components/GeneratedTeamsList";
 
 /**
  * TeamGenerator component
  */
 
-export const TeamGenerator = () => {
+export default function TeamGenerator() {
   /**
    * State for players and teams
    * Initialize players and teams with default values
@@ -101,4 +101,4 @@ export const TeamGenerator = () => {
       </footer>
     </section>
   );
-};
+}

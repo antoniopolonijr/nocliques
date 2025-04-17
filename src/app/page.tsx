@@ -1,4 +1,4 @@
-import { TeamGenerator } from "./components/TeamGenerator";
+import TeamGenerator from "@/app/components/TeamGenerator";
 
 export default function Home() {
   return (

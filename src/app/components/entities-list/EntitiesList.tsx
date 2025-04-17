@@ -26,8 +26,8 @@ import { EntityType, EntitiesListProps } from "@/app/types/entityTypes";
 // Import utility functions from the entityUtils file
 import { formatEntity, updateNumberOfEntities } from "@/app/utils/entityUtils";
 // Import the EntityImport and EntityTable components
-import { EntityImport } from "./EntityImport";
-import { EntityTable } from "./EntityTable";
+import EntityImport from "@/app/components/entities-list/EntityImport";
+import EntityTable from "@/app/components/entities-list/EntityTable";
 
 /**
  * EntitiesList Component
@@ -35,11 +35,11 @@ import { EntityTable } from "./EntityTable";
  * @param entities - The list of entities to display
  * @param setEntities - Function to update the list of entities
  */
-export const EntitiesList = <T extends EntityType>({
+export default function EntitiesList<T extends EntityType>({
   entityType,
   entities,
   setEntities,
-}: EntitiesListProps<T>) => {
+}: EntitiesListProps<T>) {
   // Format the entity type for display
   const { singular, plural, capitalizedSingular, capitalizedPlural } =
     formatEntity(entityType);
@@ -147,4 +147,4 @@ export const EntitiesList = <T extends EntityType>({
       )}
     </section>
   );
-};
+}

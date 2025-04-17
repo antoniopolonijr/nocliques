@@ -53,11 +53,11 @@ import {
 /**
  * EntitiesList Component
  */
-export const EntityTable = <T extends EntityType>({
+export default function EntityTable<T extends EntityType>({
   entityType,
   entities,
   setEntities,
-}: EntityTableProps<T>) => {
+}: EntityTableProps<T>) {
   // Format the entity type for display
   const { singular, plural, capitalizedSingular, capitalizedPlural } =
     formatEntity(entityType);
@@ -312,4 +312,4 @@ export const EntityTable = <T extends EntityType>({
       </Table>
     </section>
   );
-};
+}
