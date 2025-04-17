@@ -84,7 +84,7 @@ export default function EntityImport<T extends EntityType>({
     if (!importText) {
       // If empty, show an error message or a toast notification
       toast({
-        description: `No data to import. Please provide a list of ${plural}.`,
+        description: `Nothing was imported because the textarea was empty.`,
         title: "Import Error",
         variant: "destructive",
       });

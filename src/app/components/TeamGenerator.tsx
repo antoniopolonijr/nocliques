@@ -12,7 +12,7 @@
  */
 
 // React Hooks
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 
 // Capture DOM as image
 import html2canvas from "html2canvas";
@@ -27,6 +27,12 @@ import {
   generateBalancedTeams,
   formatTeamsForCopy,
 } from "@/app/utils/teamGeneratorUtils";
+import {
+  loadPlayers,
+  loadTeams,
+  savePlayers,
+  saveTeams,
+} from "@/app/utils/storageUtils";
 
 // Types
 import { Player, Team, GeneratedTeams } from "@/app/types/entityTypes";
@@ -43,12 +49,14 @@ export default function TeamGenerator() {
    * State for players and teams
    * Initialize players and teams with default values
    * Players and teams are stored as arrays of Player and Team objects
-   * The initializeEntities function is used to create default entities
+   * Load saved data or initializeEntities function is used to create default entities
    */
   const [players, setPlayers] = useState<Player[]>(
-    initializeEntities("Players")
+    loadPlayers() ?? initializeEntities("Players")
   );
-  const [teams, setTeams] = useState<Team[]>(initializeEntities("Teams"));
+  const [teams, setTeams] = useState<Team[]>(
+    loadTeams() ?? initializeEntities("Teams")
+  );
 
   // Control visibility of generated teams section
   const [isGenerated, setIsGenerated] = useState(false);
@@ -94,6 +102,17 @@ export default function TeamGenerator() {
       .getElementById("team-generator-title")
       ?.scrollIntoView({ behavior: "smooth" });
   }
+
+  /**
+   * Persist players and teams to localStorage on change
+   */
+  useEffect(() => {
+    savePlayers(players);
+  }, [players]);
+
+  useEffect(() => {
+    saveTeams(teams);
+  }, [teams]);
 
   /**
    * Copies formatted team data to clipboard
