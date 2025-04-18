@@ -8,9 +8,6 @@ import { Player, Team, GeneratedTeams } from "@/app/types/entityTypes";
 // Constants
 import { POSITION_ORDER } from "@/app/constants/entityDefaults";
 
-// Constants
-import { POSITION_ORDER } from "@/app/constants/entityDefaults";
-
 /**
  * Counts the total number of players in a given team.
  */
