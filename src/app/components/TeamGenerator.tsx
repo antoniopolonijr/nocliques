@@ -108,14 +108,23 @@ export default function TeamGenerator() {
   }
 
   /**
-   * Persist players and teams to localStorage on change
+   * Sync players state with localStorage whenever it changes.
+   * Ensures persistence of data between sessions.
    */
   useEffect(() => {
-    savePlayers(players);
+    if (players.length > 0) {
+      savePlayers(players);
+    }
   }, [players]);
 
+  /**
+   * Sync teams state with localStorage whenever it changes.
+   * Ensures persistence of data between sessions.
+   */
   useEffect(() => {
-    saveTeams(teams);
+    if (teams.length > 0) {
+      saveTeams(teams);
+    }
   }, [teams]);
 
   /**
@@ -128,7 +137,7 @@ export default function TeamGenerator() {
       toast({
         description: "Generated Teams Copied!",
       });
-    } catch (err) {
+    } catch {
       alert("Failed to copy. Please try again.");
     }
   }
@@ -173,7 +182,7 @@ export default function TeamGenerator() {
           text: "Check out these balanced teams from NoCliques!",
           files: [file],
         });
-      } catch (err) {
+      } catch {
         alert("Sharing failed or was canceled.");
       }
     });
@@ -199,7 +208,7 @@ export default function TeamGenerator() {
         </h2>
         <p className="text-center max-w-prose mx-auto text-zinc-500 dark:text-zinc-400">
           NoCliques is a team generator app designed to create fair and balanced
-          teams avoiding the famous "cliques".
+          teams avoiding the famous &quot;cliques&quot;.
         </p>
       </header>
       <section id="main-section">

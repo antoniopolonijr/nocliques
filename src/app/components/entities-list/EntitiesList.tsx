@@ -42,8 +42,7 @@ export default function EntitiesList<T extends EntityType>({
   setEntities,
 }: EntitiesListProps<T>) {
   // Format the entity type for display
-  const { singular, plural, capitalizedSingular, capitalizedPlural } =
-    formatEntity(entityType);
+  const { plural, capitalizedPlural } = formatEntity(entityType);
 
   // Updates the list of Entities when the dropdown value changes.
   const handleUpdateNumberOfEntities = (newLength: number) =>
