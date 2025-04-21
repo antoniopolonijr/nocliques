@@ -126,8 +126,8 @@ export default function EntityTable<T extends EntityType>({
         id={`${plural}-table-instructions`}
         className="text-sm text-zinc-500 dark:text-zinc-400"
       >
-        Select the number of {plural}, then fill in each {singular}'s fields.
-        You can also import a list of {plural}.
+        Select the number of {plural}, then fill in each {singular}
+        &apos;s fields. You can also import a list of {plural}.
       </p>
       <Table aria-describedby={`${plural}-table-instructions`}>
         <TableHeader>

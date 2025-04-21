@@ -34,7 +34,7 @@ export interface Player extends BaseEntity {
 }
 
 // Team entity only has a name.
-export interface Team extends BaseEntity {}
+export type Team = BaseEntity;
 
 // Define additional properties as needed for future entities
 /* export interface NewEntityType extends BaseEntity {  

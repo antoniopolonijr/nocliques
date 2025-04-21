@@ -58,8 +58,7 @@ export default function EntityImport<T extends EntityType>({
   setEntities,
 }: EntityImportProps<T>) {
   // Format the entity type for display
-  const { singular, plural, capitalizedSingular, capitalizedPlural } =
-    formatEntity(entityType);
+  const { singular, plural, capitalizedPlural } = formatEntity(entityType);
 
   /**
    * State and functions for importing Entities.
