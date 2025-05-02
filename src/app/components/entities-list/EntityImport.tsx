@@ -105,7 +105,7 @@ export default function EntityImport<T extends EntityType>({
    * Render the EntityImport component
    */
   return (
-    <section aria-label={`Import ${capitalizedPlural} Section`}>
+    <section>
       <AlertDialog>
         <AlertDialogTrigger asChild>
           <Button

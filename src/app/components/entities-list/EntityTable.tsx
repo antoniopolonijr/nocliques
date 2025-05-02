@@ -120,7 +120,6 @@ export default function EntityTable<T extends EntityType>({
     <section
       aria-label={`${capitalizedPlural} Table Section`}
       className="flex flex-col gap-4 p-4 sm:p-6 pt-0 sm:pt-0"
-      id={`${capitalizedPlural} Table Section`}
     >
       <p
         id={`${plural}-table-instructions`}
@@ -159,13 +158,12 @@ export default function EntityTable<T extends EntityType>({
                       name: e.target.value,
                     } as Partial<EntityMap[T]>)
                   }
-                  aria-label={`${
-                    entity.name || `${capitalizedSingular} ${index + 1}`
+                  aria-label={`${capitalizedSingular} ${
+                    entity.name || index + 1
                   } Name`}
                   placeholder={`${capitalizedSingular} ${index + 1}`}
                   id={`${singular}-${index + 1}-name`} // Unique ID for each entity field
                   name={`${singular}-${index + 1}-name`} // Unique name for each entity field
-                  required
                 />
               </TableCell>
 
@@ -174,7 +172,6 @@ export default function EntityTable<T extends EntityType>({
               {entityType === "Players" && (
                 <TableCell className="px-0.5">
                   <Select
-                    required
                     name={`${singular}-${index + 1}-position`} // Unique name for each entity field
                     value={
                       ("position" in entity
@@ -190,8 +187,8 @@ export default function EntityTable<T extends EntityType>({
                   >
                     <SelectTrigger
                       id={`${singular}-${index + 1}-position`} // Unique ID for each entity field
-                      aria-label={`${
-                        entity.name || `${capitalizedSingular} ${index + 1}`
+                      aria-label={`${capitalizedSingular} ${
+                        entity.name || index + 1
                       } Position`}
                     >
                       <SelectValue placeholder="Position">
@@ -228,7 +225,6 @@ export default function EntityTable<T extends EntityType>({
               {entityType === "Players" && (
                 <TableCell className="px-0.5">
                   <Select
-                    required
                     name={`${singular}-${index + 1}-skill`} // Unique name for each entity field
                     // Use entity skill if set, default to "Medium" if not set
                     value={
@@ -245,8 +241,8 @@ export default function EntityTable<T extends EntityType>({
                   >
                     <SelectTrigger
                       id={`${singular}-${index + 1}-skill`} // Unique ID for each entity field
-                      aria-label={`${
-                        entity.name || `${capitalizedSingular} ${index + 1}`
+                      aria-label={`${capitalizedSingular} ${
+                        entity.name || index + 1
                       } Skill`}
                     >
                       <SelectValue placeholder="Skill">

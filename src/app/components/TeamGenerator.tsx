@@ -193,31 +193,36 @@ export default function TeamGenerator() {
    */
   return (
     <section
-      id="team-generator-title"
-      aria-labelledby="team-generator-title"
+      id="team-generator-section"
       className="bg-white text-zinc-950 dark:bg-zinc-950 dark:text-zinc-50 w-full max-w-5xl mx-auto text-center sm:text-left"
     >
       {/* Header */}
       <header className="flex flex-col space-y-3 p-6 sm:p-8">
-        <h2
+        <h1
           id="team-generator-title"
+          aria-label="NoCliques"
           className="text-4xl font-bold text-center"
         >
-          N<Icon className="inline" iconNode={soccerBall} />
+          N
+          <Icon className="inline" iconNode={soccerBall} aria-hidden="true" />
           Cliques
-        </h2>
+        </h1>
         <p className="text-center max-w-prose mx-auto text-zinc-500 dark:text-zinc-400">
           NoCliques is a team generator app designed to create fair and balanced
-          teams avoiding the famous &quot;cliques&quot;.
+          teams avoiding the famous &quot;cliques&quot;
         </p>
       </header>
       <section id="main-section">
         {/* Input Section */}
         {!isGenerated && (
           <section
-            aria-labelledby="input-section"
             className="md:flex md:gap-6 p-4 sm:p-6 sm:pt-0 pt-0 space-y-4 sm:space-y-6 md:space-y-0"
+            aria-labelledby="input-section-heading"
           >
+            <h2 id="input-section-heading" className="sr-only">
+              Input Section
+            </h2>
+
             {/* Player Input */}
             <div className="min-w-[280px] w-full md:w-2/3">
               <EntitiesList // Component for player input
@@ -241,9 +246,13 @@ export default function TeamGenerator() {
         {/* Output Section */}
         {isGenerated && (
           <section
-            aria-labelledby="output-section"
             className="p-4 sm:p-6 pt-0 sm:pt-0"
+            aria-labelledby="output-section-heading"
           >
+            <h2 id="output-section-heading" className="sr-only">
+              Output Section
+            </h2>
+
             <div className="min-w-[280px] w-full" ref={resultRef}>
               <GeneratedTeamsList
                 generatedTeams={generatedTeams}
@@ -268,7 +277,7 @@ export default function TeamGenerator() {
               type="button"
               onClick={handleDownload}
             >
-              <Download />
+              <Download aria-hidden="true" />
               Download
             </Button>
 
@@ -278,7 +287,7 @@ export default function TeamGenerator() {
               type="button"
               onClick={handleCopy}
             >
-              <Copy />
+              <Copy aria-hidden="true" />
               Copy
             </Button>
 
@@ -288,7 +297,7 @@ export default function TeamGenerator() {
               type="button"
               onClick={handleShare}
             >
-              <Share2 /> Share
+              <Share2 aria-hidden="true" /> Share
             </Button>
           </div>
         )}
@@ -303,7 +312,7 @@ export default function TeamGenerator() {
               variant="outline"
               onClick={handleEdit}
             >
-              <Pencil />
+              <Pencil aria-hidden="true" />
               Edit
             </Button>
           )}
@@ -311,20 +320,13 @@ export default function TeamGenerator() {
           {/* Generate teams button */}
           <Button
             className="py-6 text-base sm:text-lg"
-            aria-label="Generate Teams"
+            aria-label={isGenerated ? "Generate New Teams" : "Generate Teams"}
             type="button"
             variant="default"
             onClick={handleGenerateTeams}
           >
-            {isGenerated ? (
-              <>
-                <Icon iconNode={soccerPitch} /> Generate New Teams
-              </>
-            ) : (
-              <>
-                <Icon iconNode={soccerPitch} /> Generate Teams
-              </>
-            )}
+            <Icon iconNode={soccerPitch} aria-hidden="true" />
+            {isGenerated ? "Generate New Teams" : "Generate Teams"}
           </Button>
         </div>
       </footer>

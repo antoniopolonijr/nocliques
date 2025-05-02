@@ -1,16 +1,20 @@
 /**
  * EntitiesList Component
- * This component allows users to input and manage a list of entities.
- * It supports multiple entity types (e.g., Players, Teams) and provides import functionality.
- * The component includes features for adding, updating, and deleting entities.
- * It also allows users to reset the entities to their default values.
- * The component is designed to be reusable and flexible for different entity types.
+ *
+ * This reusable component manages a dynamic list of entities (e.g., Players, Teams).
+ *
+ * Main responsibilities:
+ * - Displays a header with entity title and quantity selector.
+ * - Supports importing entities.
+ * - Renders an editable table of entities.
+ * - Ensures accessibility via proper ARIA attributes.
+ *
+ * Built with TypeScript, Next.js, and ShadCN UI principles.
  */
 
 /**
- * Import dependencies
+ * -------- Dependencies --------
  */
-
 // UI Components
 import {
   Select,
@@ -26,12 +30,12 @@ import { EntityType, EntitiesListProps } from "@/app/types/entityTypes";
 // Utility Functions
 import { formatEntity, updateNumberOfEntities } from "@/app/utils/entityUtils";
 
-// Components
+// Subcomponents
 import EntityImport from "@/app/components/entities-list/EntityImport";
 import EntityTable from "@/app/components/entities-list/EntityTable";
 
 /**
- * EntitiesList Component
+ * -------- EntitiesList Component --------
  * @param entityType - The type of entity to manage
  * @param entities - The list of entities to display
  * @param setEntities - Function to update the list of entities
@@ -41,33 +45,49 @@ export default function EntitiesList<T extends EntityType>({
   entities,
   setEntities,
 }: EntitiesListProps<T>) {
-  // Format the entity type for display
+  /**
+   * Format entity type for consistent singular/plural labels.
+   * Example: "player" -> { plural: "players", capitalizedPlural: "Players" }
+   */
   const { plural, capitalizedPlural } = formatEntity(entityType);
 
-  // Updates the list of Entities when the dropdown value changes.
-  const handleUpdateNumberOfEntities = (newLength: number) =>
-    setEntities((prev) => updateNumberOfEntities(prev, newLength, entityType));
+  /**
+   * Handle updates to the number of entities selected in the dropdown.
+   * Dynamically adjusts the list by adding or removing entities.
+   *
+   * @param newLength - Desired number of entities
+   */
+  const handleUpdateNumberOfEntities = (newLength: number) => {
+    setEntities((prevEntities) =>
+      updateNumberOfEntities(prevEntities, newLength, entityType)
+    );
+  };
 
   /**
-   * Renders the EntitiesList component.
+   * -------- Render --------
    */
   return (
     <section
-      id={`${capitalizedPlural}-list-title`}
-      aria-labelledby={`${capitalizedPlural}-list-title`}
+      aria-labelledby={`${plural}-list-title`}
       className="rounded-xl border border-zinc-200 bg-white text-zinc-950 shadow dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-50"
     >
+      {/* Section Header */}
       <header className="p-4 sm:p-6">
         <div className="flex justify-between items-center">
-          <div className="flex gap-2 items-center">
+          {/* Title and Quantity Selector Group */}
+          <div className="flex items-center gap-2">
+            {/* Accessible heading for screen readers */}
             <h3
-              id={`${capitalizedPlural}-list-title`}
-              className="font-semibold leading-none tracking-tight text-lg"
+              id={`${plural}-list-title`}
+              className="text-lg font-semibold leading-none tracking-tight"
             >
               {capitalizedPlural}
             </h3>
 
-            {/* Dropdown to select the number of Entities */}
+            {/* Dropdown to select how many entities to manage */}
+            <label htmlFor={`number-of-${plural}`} className="sr-only">
+              Select number of {capitalizedPlural}
+            </label>
             <Select
               name={`number-of-${plural}`}
               value={entities.length.toString()}
@@ -75,20 +95,14 @@ export default function EntitiesList<T extends EntityType>({
                 handleUpdateNumberOfEntities(parseInt(value, 10))
               }
             >
-              <SelectTrigger
-                aria-label={`Number of ${capitalizedPlural}`}
-                id={`number-of-${plural}`}
-              >
+              <SelectTrigger id={`number-of-${plural}`}>
                 <SelectValue />
               </SelectTrigger>
+
               <SelectContent>
-                {/* Generate selectable numbers from 1 to 100 dynamically */}
+                {/* Dynamically generate options from 1 to 100 */}
                 {Array.from({ length: 100 }, (_, i) => (
-                  <SelectItem
-                    key={i + 1}
-                    value={(i + 1).toString()}
-                    aria-label={`Select ${i + 1} ${capitalizedPlural}`}
-                  >
+                  <SelectItem key={i + 1} value={(i + 1).toString()}>
                     {i + 1}
                   </SelectItem>
                 ))}
@@ -96,11 +110,12 @@ export default function EntitiesList<T extends EntityType>({
             </Select>
           </div>
 
+          {/* Import Entities Button */}
           <EntityImport entityType={entityType} setEntities={setEntities} />
         </div>
       </header>
 
-      {/* Renders Entities Table section */}
+      {/* Section Table */}
       <EntityTable
         entityType={entityType}
         entities={entities}
