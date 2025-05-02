@@ -55,12 +55,15 @@ export default function TeamGenerator() {
    * Players and teams are stored as arrays of Player and Team objects
    * Load saved data or initializeEntities function is used to create default entities
    */
-  const [players, setPlayers] = useState<Player[]>(
-    loadPlayers() ?? initializeEntities("Players")
-  );
-  const [teams, setTeams] = useState<Team[]>(
-    loadTeams() ?? initializeEntities("Teams")
-  );
+
+  // State to check if the component has mounted
+  const [hasMounted, setHasMounted] = useState(false);
+
+  // State to store players
+  const [players, setPlayers] = useState<Player[]>([]);
+
+  // State to store teams
+  const [teams, setTeams] = useState<Team[]>([]);
 
   // Control visibility of generated teams section
   const [isGenerated, setIsGenerated] = useState(false);
@@ -77,35 +80,12 @@ export default function TeamGenerator() {
   // Ref to the DOM element that will be captured as image
   const resultRef = useRef<HTMLDivElement>(null);
 
-  /**
-   * Edit teams and players
-   */
-  function handleEdit(): void {
-    setIsGenerated(false);
-    document
-      .getElementById("team-generator-title")
-      ?.scrollIntoView({ behavior: "smooth" });
-  }
-
-  /**
-   * Generate teams based on player and team inputs
-   * The function uses the generateBalancedTeams function to create balanced teams
-   */
-  function handleGenerateTeams(): void {
-    // Check if players and teams are empty
-    if (players.length === 0 || teams.length === 0) {
-      toast({
-        description: "Please add players and teams before generating.",
-      });
-      return;
-    }
-    setGeneratedTeams(generateBalancedTeams(players, teams));
-    setGeneratedAt(new Date()); // Stores the date at the time of generation
-    setIsGenerated(true);
-    document
-      .getElementById("team-generator-title")
-      ?.scrollIntoView({ behavior: "smooth" });
-  }
+  // Initialize data after first render
+  useEffect(() => {
+    setPlayers(loadPlayers() ?? initializeEntities("Players"));
+    setTeams(loadTeams() ?? initializeEntities("Teams"));
+    setHasMounted(true);
+  }, []);
 
   /**
    * Sync players state with localStorage whenever it changes.
@@ -126,6 +106,42 @@ export default function TeamGenerator() {
       saveTeams(teams);
     }
   }, [teams]);
+
+  /**
+   * Check if the component has mounted before rendering
+   * This is to avoid hydration issues in Next.js
+   */
+  if (!hasMounted) return null;
+
+  /**
+   * Edit teams and players
+   */
+  function handleEdit(): void {
+    setIsGenerated(false);
+    document
+      .getElementById("team-generator-section")
+      ?.scrollIntoView({ behavior: "smooth" });
+  }
+
+  /**
+   * Generate teams based on player and team inputs
+   * The function uses the generateBalancedTeams function to create balanced teams
+   */
+  function handleGenerateTeams(): void {
+    // Check if players and teams are empty
+    if (players.length === 0 || teams.length === 0) {
+      toast({
+        description: "Please add players and teams before generating.",
+      });
+      return;
+    }
+    setGeneratedTeams(generateBalancedTeams(players, teams));
+    setGeneratedAt(new Date()); // Stores the date at the time of generation
+    setIsGenerated(true);
+    document
+      .getElementById("team-generator-section")
+      ?.scrollIntoView({ behavior: "smooth" });
+  }
 
   /**
    * Copies formatted team data to clipboard
