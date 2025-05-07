@@ -113,10 +113,11 @@ export default function EntityImport<T extends EntityType>({
             aria-label={`Import ${capitalizedPlural}`}
           >
             <span className="inline sm:hidden md:inline lg:hidden">
-              <Import className="inline" /> Import
+              <Import className="inline me-1" aria-hidden="true" /> Import
             </span>
             <span className="hidden sm:inline md:hidden lg:inline">
-              <Import className="inline" /> Import {capitalizedPlural}
+              <Import className="inline me-1" aria-hidden="true" /> Import{" "}
+              {capitalizedPlural}
             </span>
           </Button>
         </AlertDialogTrigger>

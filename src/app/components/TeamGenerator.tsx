@@ -213,7 +213,7 @@ export default function TeamGenerator() {
       className="bg-white text-zinc-950 dark:bg-zinc-950 dark:text-zinc-50 w-full max-w-5xl mx-auto text-center sm:text-left"
     >
       {/* Header */}
-      <header className="flex flex-col space-y-3 p-6 sm:p-8">
+      <header className="flex flex-col p-6 sm:p-8 space-y-4 sm:space-y-6">
         <h1
           id="team-generator-title"
           aria-label="NoCliques"
@@ -232,7 +232,7 @@ export default function TeamGenerator() {
         {/* Input Section */}
         {!isGenerated && (
           <section
-            className="md:flex md:gap-6 p-4 sm:p-6 sm:pt-0 pt-0 space-y-4 sm:space-y-6 md:space-y-0"
+            className="flex flex-col md:flex-row gap-4 md:gap-6 px-4 pt-0 pb-0 sm:px-6"
             aria-labelledby="input-section-heading"
           >
             <h2 id="input-section-heading" className="sr-only">
@@ -262,7 +262,7 @@ export default function TeamGenerator() {
         {/* Output Section */}
         {isGenerated && (
           <section
-            className="p-4 sm:p-6 pt-0 sm:pt-0"
+            className="px-4 pt-0 pb-0 sm:px-6"
             aria-labelledby="output-section-heading"
           >
             <h2 id="output-section-heading" className="sr-only">
@@ -283,7 +283,7 @@ export default function TeamGenerator() {
       <footer
         className={`flex flex-col md:flex-row ${
           isGenerated ? `sm:justify-between` : `sm:justify-center`
-        } gap-4 p-4 sm:p-6 pt-0 sm:pt-0`}
+        } gap-4 py-6 sm:py-8 px-4 sm:px-6`}
       >
         {isGenerated && (
           <div className="flex justify-center gap-1 sm:gap-4 items-center">
