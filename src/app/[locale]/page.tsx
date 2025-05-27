@@ -1,23 +1,27 @@
 // Components
-import TeamGenerator from "@/app/components/TeamGenerator";
+import TeamGenerator from "@/app/[locale]/components/TeamGenerator";
 
 // Icons
 import { Globe, Mail } from "lucide-react";
 import { SiGithub, SiLinkedin } from "react-icons/si";
 
-// Next
-import Link from "next/link";
+// Translations
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 
 export default function Home() {
+  // Translations
+  const t = useTranslations("Page");
+
   return (
     <div>
       <main>
         <TeamGenerator />
       </main>
-      <footer className="flex flex-col sm:flex-row justify-between items-center gap-4 py-4 sm:py-6 px-2 sm:px-6 bg-white text-zinc-500 dark:bg-zinc-950 dark:text-zinc-400 w-full max-w-5xl mx-auto border-t border-zinc-200 dark:border-zinc-800 border-dashed">
+      <footer className="flex flex-col sm:flex-row justify-between items-center gap-4 py-4 sm:py-6 px-2 sm:px-6 bg-white text-zinc-500 dark:bg-zinc-950 dark:text-zinc-400 w-full mx-auto border-t border-zinc-200 dark:border-zinc-800 border-dashed">
         {/* Author Credits */}
         <p>
-          Made by{" "}
+          {t("madeBy")}{" "}
           <span className="text-zinc-950 dark:text-zinc-50">
             Antonio Poloni
           </span>{" "}
@@ -38,7 +42,7 @@ export default function Home() {
 
           <Link
             href="https://antoniopolonijr.github.io/index.html"
-            aria-label="Personal website"
+            aria-label="Website"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-zinc-950 dark:hover:text-zinc-50"

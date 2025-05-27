@@ -52,14 +52,14 @@ import {
   EntityMap,
   Player,
   EntityTableProps,
-} from "@/app/types/entityTypes";
+} from "@/app/[locale]/types/entityTypes";
 
 // Constants
 import {
   entityDefaults,
   playerPositions,
   playerSkills,
-} from "@/app/constants/entityDefaults";
+} from "@/app/[locale]/constants/entityDefaults";
 
 // Utility Functions
 import {
@@ -69,7 +69,10 @@ import {
   addEntity,
   updateEntity,
   resetEntities,
-} from "@/app/utils/entityUtils";
+} from "@/app/[locale]/utils/entityUtils";
+
+// Translations
+import { useTranslations } from "next-intl";
 
 /**
  * EntityTable Component
@@ -82,6 +85,9 @@ export default function EntityTable<T extends EntityType>({
   entities,
   setEntities,
 }: EntityTableProps<T>) {
+  // Translations
+  const t = useTranslations("EntityTable");
+
   // Format the entity type for display
   const { singular, plural, capitalizedSingular, capitalizedPlural } =
     formatEntity(entityType);
@@ -108,7 +114,7 @@ export default function EntityTable<T extends EntityType>({
     // Scroll to the top of the list
     setTimeout(() => {
       document
-        .getElementById(`${capitalizedPlural}-list-title`)
+        .getElementById(`${t(plural)}-list`)
         ?.scrollIntoView({ behavior: "smooth" });
     }, 400); // Delay the scroll until the DOM has settled
   };
@@ -118,23 +124,23 @@ export default function EntityTable<T extends EntityType>({
    */
   return (
     <section
-      aria-label={`${capitalizedPlural} Table Section`}
+      aria-label={`${t(capitalizedPlural)} - ${t("tableSection")}`}
       className="flex flex-col gap-4 p-4 sm:p-6 pt-0 sm:pt-0"
     >
       <p
-        id={`${plural}-table-instructions`}
+        id={`${t(plural)}-table-instructions`}
         className="text-sm text-zinc-500 dark:text-zinc-400"
       >
-        Select the number of {plural}, then fill in each {singular}
-        &apos;s fields. You can also import a list of {plural}.
+        {t("instructionPrefix")} {t(plural)} {t("instructionInfix")} {t(plural)}
+        .
       </p>
-      <Table aria-describedby={`${plural}-table-instructions`}>
+      <Table aria-describedby={`${t(plural)}-table-instructions`}>
         <TableHeader>
           <TableRow>
             {/* Table headers for each entity field */}
             {Object.keys(entityDefaults[entityType]).map((key) => (
               <TableHead key={key}>
-                {key.charAt(0).toUpperCase() + key.slice(1)}
+                {t(key) || key.charAt(0).toUpperCase() + key.slice(1)}
               </TableHead>
             ))}
 
@@ -158,12 +164,12 @@ export default function EntityTable<T extends EntityType>({
                       name: e.target.value,
                     } as Partial<EntityMap[T]>)
                   }
-                  aria-label={`${capitalizedSingular} ${
+                  aria-label={`${t(capitalizedSingular)} ${
                     entity.name || index + 1
-                  } Name`}
-                  placeholder={`${capitalizedSingular} ${index + 1}`}
-                  id={`${singular}-${index + 1}-name`} // Unique ID for each entity field
-                  name={`${singular}-${index + 1}-name`} // Unique name for each entity field
+                  } - ${t("Name")}`}
+                  placeholder={`${t(capitalizedSingular)} ${index + 1}`}
+                  id={`${t(singular)}-${index + 1}-name`} // Unique ID for each entity field
+                  name={`${t(singular)}-${index + 1}-name`} // Unique name for each entity field
                 />
               </TableCell>
 
@@ -172,7 +178,7 @@ export default function EntityTable<T extends EntityType>({
               {entityType === "Players" && (
                 <TableCell className="px-0.5">
                   <Select
-                    name={`${singular}-${index + 1}-position`} // Unique name for each entity field
+                    name={`${t(singular)}-${index + 1}-position`} // Unique name for each entity field
                     value={
                       ("position" in entity
                         ? entity.position // Use entity position if set
@@ -186,21 +192,21 @@ export default function EntityTable<T extends EntityType>({
                     }
                   >
                     <SelectTrigger
-                      id={`${singular}-${index + 1}-position`} // Unique ID for each entity field
-                      aria-label={`${capitalizedSingular} ${
+                      id={`${t(singular)}-${index + 1}-position`} // Unique ID for each entity field
+                      aria-label={`${t(capitalizedSingular)} ${
                         entity.name || index + 1
-                      } Position`}
+                      } - ${t("Position")}`}
                     >
-                      <SelectValue placeholder="Position">
+                      <SelectValue placeholder={t("Position")}>
                         {/* Display the position abbreviation (e.g., "GK" for "Goalkeeper") on small screens */}
                         <abbr
-                          title={(entity as Player).position}
+                          title={t((entity as Player).position)}
                           className="sm:hidden md:inline lg:hidden no-underline"
                         >
-                          {getAbbreviation((entity as Player).position)}
+                          {t(getAbbreviation((entity as Player).position))}
                         </abbr>
                         <span className="hidden sm:inline md:hidden lg:inline">
-                          {(entity as Player).position}
+                          {t((entity as Player).position)}
                         </span>
                       </SelectValue>
                     </SelectTrigger>
@@ -210,9 +216,9 @@ export default function EntityTable<T extends EntityType>({
                         <SelectItem
                           key={position}
                           value={position}
-                          aria-label={`Select ${position} position`}
+                          aria-label={`${t("Select")} ${t(position)}`}
                         >
-                          {position}
+                          {t(position)}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -225,7 +231,7 @@ export default function EntityTable<T extends EntityType>({
               {entityType === "Players" && (
                 <TableCell className="px-0.5">
                   <Select
-                    name={`${singular}-${index + 1}-skill`} // Unique name for each entity field
+                    name={`${t(singular)}-${index + 1}-skill`} // Unique name for each entity field
                     // Use entity skill if set, default to "Medium" if not set
                     value={
                       ("skill" in entity
@@ -240,21 +246,21 @@ export default function EntityTable<T extends EntityType>({
                     }
                   >
                     <SelectTrigger
-                      id={`${singular}-${index + 1}-skill`} // Unique ID for each entity field
-                      aria-label={`${capitalizedSingular} ${
+                      id={`${t(singular)}-${index + 1}-skill`} // Unique ID for each entity field
+                      aria-label={`${t(capitalizedSingular)} ${
                         entity.name || index + 1
-                      } Skill`}
+                      } - ${t("Skill")}`}
                     >
-                      <SelectValue placeholder="Skill">
+                      <SelectValue placeholder={t("Skill")}>
                         {/* Display the skill abbreviation (e.g., "H" for "High") on small screens */}
                         <abbr
-                          title={(entity as Player).skill}
+                          title={t((entity as Player).skill)}
                           className="sm:hidden md:inline lg:hidden no-underline"
                         >
-                          {getAbbreviation((entity as Player).skill)}
+                          {t(getAbbreviation((entity as Player).skill))}
                         </abbr>
                         <span className="hidden sm:inline md:hidden lg:inline">
-                          {(entity as Player).skill}
+                          {t((entity as Player).skill)}
                         </span>
                       </SelectValue>
                     </SelectTrigger>
@@ -264,9 +270,9 @@ export default function EntityTable<T extends EntityType>({
                         <SelectItem
                           key={skill}
                           value={skill}
-                          aria-label={`Select ${skill} skill`}
+                          aria-label={`${t("Select")} ${t(skill)}`}
                         >
-                          {skill}
+                          {t(skill)}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -283,7 +289,7 @@ export default function EntityTable<T extends EntityType>({
                   type="button"
                   variant="destructive"
                   onClick={() => handleDeleteEntity(index)}
-                  aria-label={`Delete ${capitalizedSingular} ${
+                  aria-label={`${t("Delete")} ${t(capitalizedSingular)} ${
                     entity.name || `${index + 1}`
                   }`}
                 >
@@ -292,7 +298,7 @@ export default function EntityTable<T extends EntityType>({
                     <Trash2 className="inline" />
                   </span>
                   <span className="hidden sm:inline md:hidden lg:inline">
-                    <Trash2 className="inline" /> Delete
+                    <Trash2 className="inline" /> {t("Delete")}
                   </span>
                 </Button>
               </TableCell>
@@ -316,28 +322,29 @@ export default function EntityTable<T extends EntityType>({
                       <Button
                         type="button"
                         variant="destructive"
-                        aria-label={`Reset ${capitalizedPlural} Data`}
+                        aria-label={`${t("Reset")} ${t(capitalizedPlural)}`}
                       >
                         <RefreshCcw />
-                        Reset
+                        {t("Reset")}
                       </Button>
                     </AlertDialogTrigger>
                     <AlertDialogContent>
                       <AlertDialogHeader>
-                        <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                        <AlertDialogTitle>
+                          {t("AlertDialogTitle")}
+                        </AlertDialogTitle>
                         <AlertDialogDescription>
-                          This action cannot be undone. Confirming this action
-                          will reset your existing list of {plural} to default
-                          values.
+                          {t("AlertDialogDescriptionPrefix")} {t(plural)}{" "}
+                          {t("AlertDialogDescriptionSufix")}.
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogCancel>{t("Cancel")}</AlertDialogCancel>
                         <AlertDialogAction
                           onClick={handleResetEntities}
-                          aria-label={`Confirm Reset ${capitalizedPlural} Data`}
+                          aria-label={`${t("ConfirmReset")}`}
                         >
-                          Confirm Reset
+                          {t("ConfirmReset")}
                         </AlertDialogAction>
                       </AlertDialogFooter>
                     </AlertDialogContent>
@@ -350,9 +357,9 @@ export default function EntityTable<T extends EntityType>({
                   type="button"
                   variant="secondary"
                   onClick={handleAddEntity}
-                  aria-label={`Add ${capitalizedSingular}`}
+                  aria-label={`${t("Add")} ${t(capitalizedSingular)}`}
                 >
-                  <Plus className="inline" /> {capitalizedSingular}
+                  <Plus className="inline" /> {t(capitalizedSingular)}
                 </Button>
               </div>
             </TableCell>

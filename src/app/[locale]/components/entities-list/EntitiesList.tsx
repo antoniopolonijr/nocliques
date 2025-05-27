@@ -25,14 +25,23 @@ import {
 } from "@/components/ui/select";
 
 // Types
-import { EntityType, EntitiesListProps } from "@/app/types/entityTypes";
+import {
+  EntityType,
+  EntitiesListProps,
+} from "@/app/[locale]/types/entityTypes";
 
 // Utility Functions
-import { formatEntity, updateNumberOfEntities } from "@/app/utils/entityUtils";
+import {
+  formatEntity,
+  updateNumberOfEntities,
+} from "@/app/[locale]/utils/entityUtils";
 
 // Subcomponents
-import EntityImport from "@/app/components/entities-list/EntityImport";
-import EntityTable from "@/app/components/entities-list/EntityTable";
+import EntityImport from "@/app/[locale]/components/entities-list/EntityImport";
+import EntityTable from "@/app/[locale]/components/entities-list/EntityTable";
+
+// Translations
+import { useTranslations } from "next-intl";
 
 /**
  * -------- EntitiesList Component --------
@@ -45,6 +54,11 @@ export default function EntitiesList<T extends EntityType>({
   entities,
   setEntities,
 }: EntitiesListProps<T>) {
+  /**
+   * Translations
+   */
+  const t = useTranslations("EntitiesList");
+
   /**
    * Format entity type for consistent singular/plural labels.
    * Example: "player" -> { plural: "players", capitalizedPlural: "Players" }
@@ -68,7 +82,8 @@ export default function EntitiesList<T extends EntityType>({
    */
   return (
     <section
-      aria-labelledby={`${plural}-list-title`}
+      id={`${t(plural)}-list`}
+      aria-labelledby={`${t(plural)}-list-title`}
       className="rounded-xl border border-zinc-200 bg-white text-zinc-950 shadow dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-50"
     >
       {/* Section Header */}
@@ -78,24 +93,24 @@ export default function EntitiesList<T extends EntityType>({
           <div className="flex items-center gap-2">
             {/* Accessible heading for screen readers */}
             <h3
-              id={`${plural}-list-title`}
+              id={`${t(plural)}-list-title`}
               className="text-lg font-semibold leading-none tracking-tight"
             >
-              {capitalizedPlural}
+              {t(capitalizedPlural)}
             </h3>
 
             {/* Dropdown to select how many entities to manage */}
-            <label htmlFor={`number-of-${plural}`} className="sr-only">
-              Select number of {capitalizedPlural}
+            <label htmlFor={`number-of-${t(plural)}`} className="sr-only">
+              {t("selectNumberOf")} {t(capitalizedPlural)}
             </label>
             <Select
-              name={`number-of-${plural}`}
+              name={`number-of-${t(plural)}`}
               value={entities.length.toString()}
               onValueChange={(value) =>
                 handleUpdateNumberOfEntities(parseInt(value, 10))
               }
             >
-              <SelectTrigger id={`number-of-${plural}`}>
+              <SelectTrigger id={`number-of-${t(plural)}`}>
                 <SelectValue />
               </SelectTrigger>
 
