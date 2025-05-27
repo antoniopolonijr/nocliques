@@ -1,7 +1,7 @@
 {
   "Layout": {
     "title": "NoCliques",
-    "description": "NoCliques é um aplicativo desenvolvido para gerar equipes justas e equilibradas evitando as famosas \"panelinhas\"."
+    "description": "NoCliques é um aplicativo gerador de times desenvolvido para criar equipes justas e equilibradas em partidas casuais de futebol. Ao analisar as habilidades e posições dos jogadores, ele garante a imparcialidade e evita a formação de \"panelinhas\"."
   },
 
   "Page": {
@@ -10,7 +10,7 @@
 
   "TeamGenerator": {
     "title": "NoCliques",
-    "description": "NoCliques é um aplicativo desenvolvido para gerar equipes justas e equilibradas evitando as famosas \"panelinhas\".",
+    "description": "NoCliques é um aplicativo gerador de times desenvolvido para criar equipes justas e equilibradas em partidas casuais de futebol. Ao analisar as habilidades e posições dos jogadores, ele garante a imparcialidade e evita a formação de \"panelinhas\".",
     "inputSection": "Seção de Entrada",
     "outputSection": "Seção de Saída",
     "downloadGeneratedTeams": "Baixar Times Gerados",
