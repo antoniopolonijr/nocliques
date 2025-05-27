@@ -1,7 +1,7 @@
 {
   "Layout": {
     "title": "NoCliques",
-    "description": "NoCliques is an app designed to generate fair and balanced teams avoiding the famous \"cliques\"."
+    "description": "NoCliques is a team generator app designed to create fair and balanced teams for casual soccer matches. By analyzing players' skills and positions, it ensures fairness and prevents the formation of \"cliques\"."
   },
 
   "Page": {
@@ -10,7 +10,7 @@
 
   "TeamGenerator": {
     "title": "NoCliques",
-    "description": "NoCliques is an app designed to generate fair and balanced teams avoiding the famous \"cliques\".",
+    "description": "NoCliques is a team generator app designed to create fair and balanced teams for casual soccer matches. By analyzing players' skills and positions, it ensures fairness and prevents the formation of \"cliques\".",
     "inputSection": "Input Section",
     "outputSection": "Output Section",
     "downloadGeneratedTeams": "Download Generated Teams",
