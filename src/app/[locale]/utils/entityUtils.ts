@@ -3,18 +3,17 @@
  */
 
 // Types
-import { EntityMap, EntityType } from "@/app/types/entityTypes";
+import { EntityMap, EntityType } from "@/app/[locale]/types/entityTypes";
 
 // Constants
 import {
   entityDefaults,
   entityDefaultLengths,
-  DEFAULT_PLACEHOLDER,
-} from "@/app/constants/entityDefaults";
+} from "@/app/[locale]/constants/entityDefaults";
 import {
   abbreviations,
   normalizationMaps,
-} from "@/app/constants/abbreviations";
+} from "@/app/[locale]/constants/abbreviations";
 
 // Ensure abbreviations is typed as Record<string, string>
 const typedAbbreviations: Record<
@@ -256,12 +255,4 @@ export const updateNumberOfEntities = <T extends EntityType>(
   }
   // Remove Entity objects if the selected number is less than the current count
   return entities.slice(0, newLength);
-};
-
-/**
- * Retrieves the placeholder text based on the selected entity type.
- * Falls back to an empty string if the entity type is not recognized.
- */
-export const getPlaceholderText = (entityType: EntityType): string => {
-  return DEFAULT_PLACEHOLDER[entityType] || "";
 };

@@ -20,10 +20,13 @@ import {
 } from "@/components/ui/table";
 
 // Types
-import { GeneratedTableProps } from "@/app/types/entityTypes";
+import { GeneratedTableProps } from "@/app/[locale]/types/entityTypes";
 
 // Utility Functions
-import { getAbbreviation } from "@/app/utils/entityUtils";
+import { getAbbreviation } from "@/app/[locale]/utils/entityUtils";
+
+// Translations
+import { useTranslations } from "next-intl";
 
 /**
  * GeneratedTable Component
@@ -34,6 +37,9 @@ import { getAbbreviation } from "@/app/utils/entityUtils";
 export default function GeneratedTable({
   generatedTeams,
 }: GeneratedTableProps) {
+  // Translations
+  const t = useTranslations("GeneratedTable");
+
   /**
    * Render the GeneratedTable Component
    */
@@ -60,27 +66,27 @@ export default function GeneratedTable({
             </h3>
             {/* Display number of players in the team */}
             <div className="font-light text-zinc-500 dark:text-zinc-400 whitespace-nowrap">
-              ({teamPlayers.length} Players)
+              ({teamPlayers.length} {t("Players")})
             </div>
           </header>
           {/* Team Players Table */}
           <Table>
             <TableHeader>
-              <TableRow className="text-base">
-                <TableHead>Subs</TableHead>
-                <TableHead>
+              <TableRow className="text-base text-center">
+                <TableHead className="text-center">{t("Subs")}</TableHead>
+                <TableHead className="text-center">
                   <span
-                    title="Position"
+                    title={t("Position")}
                     className="sm:hidden md:inline lg:hidden no-underline"
-                    aria-label="Position"
+                    aria-label={t("Position")}
                   >
-                    Pos
+                    {t("Pos")}
                   </span>
                   <span className="hidden sm:inline md:hidden lg:inline">
-                    Position
+                    {t("Position")}
                   </span>
                 </TableHead>
-                <TableHead>Name</TableHead>
+                <TableHead className="text-center">{t("Name")}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody className="text-base">
@@ -88,10 +94,10 @@ export default function GeneratedTable({
               {teamPlayers.map((player, index) => (
                 <TableRow
                   key={`${player.name}-${index}`}
-                  className="w-full text-start dark:border-zinc-800/50"
+                  className="w-full text-center dark:border-zinc-800/50"
                 >
                   {/* Substitution Order - Displayed as "1º", "2º", etc. */}
-                  <TableCell className="text-zinc-500 dark:text-zinc-400">
+                  <TableCell className="text-zinc-500 dark:text-zinc-400 text-center">
                     {player.position === "Goalkeeper"
                       ? "-"
                       : `${player.substitutionOrder}º`}
@@ -104,15 +110,15 @@ export default function GeneratedTable({
                       aria-label={player.position}
                       className="sm:hidden md:inline lg:hidden"
                     >
-                      {getAbbreviation(player.position)}
+                      {t(getAbbreviation(player.position))}
                     </span>
                     <span className="hidden sm:inline md:hidden lg:inline">
-                      {player.position}
+                      {t(player.position)}
                     </span>
                   </TableCell>
 
                   {/* Player Name - Truncated if too long */}
-                  <TableCell className="max-w-[100px] w-full truncate">
+                  <TableCell className="max-w-[100px] w-full truncate text-center">
                     {player.name}
                   </TableCell>
                 </TableRow>

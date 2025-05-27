@@ -39,14 +39,19 @@ import { useToast } from "@/hooks/use-toast";
 import {
   formatEntity,
   parseImportData,
-  getPlaceholderText,
-} from "@/app/utils/entityUtils";
+} from "@/app/[locale]/utils/entityUtils";
 
 // Types
-import { EntityType, EntityImportProps } from "@/app/types/entityTypes";
+import {
+  EntityType,
+  EntityImportProps,
+} from "@/app/[locale]/types/entityTypes";
 
 // Constants
-import { textLabel, fieldsLegend } from "@/app/constants/entityDefaults";
+import { fieldsLegend } from "@/app/[locale]/constants/entityDefaults";
+
+// Translations
+import { useTranslations } from "next-intl";
 
 /**
  * EntityImport Component
@@ -57,6 +62,9 @@ export default function EntityImport<T extends EntityType>({
   entityType,
   setEntities,
 }: EntityImportProps<T>) {
+  // Translations
+  const t = useTranslations("EntityImport");
+
   // Format the entity type for display
   const { singular, plural, capitalizedPlural } = formatEntity(entityType);
 
@@ -86,8 +94,8 @@ export default function EntityImport<T extends EntityType>({
     if (!importText) {
       // If empty, show an error message or a toast notification
       toast({
-        description: `Nothing was imported because the textarea was empty.`,
-        title: "Import Error",
+        description: `${t("ImportErrorDescription")}`,
+        title: `${t("ImportErrorTitle")}`,
         variant: "destructive",
       });
       return; // If empty, do nothing
@@ -110,54 +118,61 @@ export default function EntityImport<T extends EntityType>({
         <AlertDialogTrigger asChild>
           <Button
             variant="secondary"
-            aria-label={`Import ${capitalizedPlural}`}
+            aria-label={`${t("Import")} ${t(capitalizedPlural)}`}
           >
-            <span className="inline sm:hidden md:inline lg:hidden">
-              <Import className="inline me-1" aria-hidden="true" /> Import
-            </span>
-            <span className="hidden sm:inline md:hidden lg:inline">
-              <Import className="inline me-1" aria-hidden="true" /> Import{" "}
-              {capitalizedPlural}
-            </span>
+            <Import className="inline me-1" aria-hidden="true" /> {t("Import")}{" "}
           </Button>
         </AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Import {capitalizedPlural}</AlertDialogTitle>
+            <AlertDialogTitle>
+              {t("Import")} {t(capitalizedPlural)}
+            </AlertDialogTitle>
             <AlertDialogDescription>
               <Label
-                className="text-sm text-zinc-500 dark:text-zinc-400 font-normal"
-                htmlFor={`import-${plural}`}
+                className="text-sm text-zinc-600 dark:text-zinc-400 font-normal"
+                htmlFor={`import-${t(plural)}`}
               >
-                Insert or paste a list of {plural} with one {singular} per line.
-                {textLabel[entityType]}
+                {t("instructionPrefix")} {t(plural)} {t("instructionInfix")}{" "}
+                {t(singular)} {t("instructionSufix")}.{" "}
+                {entityType === "Players" ? `${t("instructionExtra")}` : ""}{" "}
                 {fieldsLegend[entityType]?.()}
               </Label>
             </AlertDialogDescription>
           </AlertDialogHeader>
           <section className="flex flex-col gap-4">
             <Textarea
-              placeholder={getPlaceholderText(entityType)}
+              placeholder={
+                entityType === "Players"
+                  ? `Ronaldo\nRonaldo, ${t("FORWARD")}\nRonaldo, ${t(
+                      "Forward"
+                    )}, ${t("High")}\nRonaldo, ${t("fw")}, ${t("h")}`
+                  : entityType === "Teams"
+                  ? `Real Madrid\nBarcelona`
+                  : ""
+              }
               rows={6}
-              id={`import-${plural}`}
-              name={`import-${plural}`}
-              aria-label={`Import ${capitalizedPlural} Textarea`}
+              id={`import-${t(plural)}`}
+              name={`import-${t(plural)}`}
+              aria-label={`${t("Import")} ${t(capitalizedPlural)} ${t(
+                "textarea"
+              )}`}
               value={importText}
               onChange={handleImportChange}
+              className="placeholder:text-zinc-400 dark:placeholder:text-zinc-700"
             />
             <p className="text-sm text-zinc-500 dark:text-zinc-400 font-normal">
-              <span className="font-bold">Warning:</span> This action cannot be
-              undone. Confirming the import will overwrite your existing list of{" "}
-              {plural}.
+              <span className="font-bold">{t("warning")}</span>{" "}
+              {t("warningDescription")} {t(plural)}.
             </p>
           </section>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleConfirmImport}
-              aria-label={`Confirm Import ${capitalizedPlural}`}
+              aria-label={`${t("confirmImport")} ${t(capitalizedPlural)}`}
             >
-              Confirm Import
+              {t("confirmImport")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

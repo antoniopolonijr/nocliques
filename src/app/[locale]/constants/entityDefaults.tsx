@@ -14,10 +14,14 @@
 import { JSX } from "react";
 
 // Types
-import { EntityMap, EntityType, Player } from "@/app/types/entityTypes";
+import {
+  EntityMap,
+  EntityType,
+  Player,
+} from "@/app/[locale]/types/entityTypes";
 
 // Constants
-import FieldsLegendPlayers from "@/app/constants/FieldsLegendPlayers";
+import FieldsLegendPlayers from "@/app/[locale]/constants/FieldsLegendPlayers";
 
 // Default Entity Values
 // Provides a single source of truth for default values of each entity type.
@@ -32,23 +36,6 @@ export const entityDefaultLengths: { [K in EntityType]: number } = {
   Players: 16,
   Teams: 2,
   // NewEntityType: 10, // Example for a future entity
-};
-
-/**
- * Default placeholder texts for different entity types.
- */
-export const DEFAULT_PLACEHOLDER: Record<EntityType, string> = {
-  Players: `Ronaldo\nRonaldo, FORWARD\nRonaldo, Forward, High\nRonaldo, fw, h`,
-  Teams: `Real Madrid\nBarcelona`,
-};
-
-/**
- * Label texts for different entity types.
- */
-export const textLabel: Record<EntityType, string> = {
-  Players: ` Optionally, add other fields separated by commas if applicable.
-                Invalid entries will use default values. `,
-  Teams: "",
 };
 
 /**

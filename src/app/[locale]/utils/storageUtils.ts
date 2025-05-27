@@ -1,6 +1,6 @@
 // storageUtils.ts
 
-import { Player, Team } from "@/app/types/entityTypes";
+import { Player, Team } from "@/app/[locale]/types/entityTypes";
 
 /**
  * Checks if the code is running in a browser environment (client-side).

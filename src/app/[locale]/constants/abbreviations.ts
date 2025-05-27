@@ -3,7 +3,7 @@
  */
 
 // Types
-import { Player } from "@/app/types/entityTypes";
+import { Player } from "@/app/[locale]/types/entityTypes";
 
 /**
  * Abbreviations for positions
@@ -14,7 +14,7 @@ export const positionAbbreviations: Record<Player["position"], string> = {
   "Defensive Midfielder": "DM",
   "Attacking Midfielder": "AM",
   Forward: "FW",
-  Any: "Any",
+  Any: "ANY",
 };
 
 /**
@@ -64,23 +64,39 @@ export const skillLegend: Record<string, string> = reverseMap(
 export const normalizationMaps = {
   position: {
     any: "Any",
+    qualquer: "Any",
     goalkeeper: "Goalkeeper",
+    goleiro: "Goalkeeper",
     gk: "Goalkeeper",
+    gl: "Goalkeeper",
     defender: "Defender",
+    zagueiro: "Defender",
     df: "Defender",
+    zg: "Defender",
     "defensive midfielder": "Defensive Midfielder",
+    volante: "Defensive Midfielder",
     dm: "Defensive Midfielder",
+    vl: "Defensive Midfielder",
     "attacking midfielder": "Attacking Midfielder",
+    "meia atacante": "Attacking Midfielder",
     am: "Attacking Midfielder",
+    ma: "Attacking Midfielder",
     forward: "Forward",
+    atacante: "Forward",
     fw: "Forward",
+    at: "Forward",
   } as Record<string, Player["position"]>,
   skill: {
     low: "Low",
+    baixa: "Low",
     l: "Low",
+    b: "Low",
     medium: "Medium",
+    média: "Medium",
     m: "Medium",
     high: "High",
+    alta: "High",
     h: "High",
+    a: "High",
   } as Record<string, Player["skill"]>,
 };
