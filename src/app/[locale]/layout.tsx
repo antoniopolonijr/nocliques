@@ -7,6 +7,8 @@ import { NextIntlClientProvider, hasLocale, createTranslator } from "next-intl";
 import { notFound } from "next/navigation"; // Function to trigger 404 page
 import { routing } from "@/i18n/routing"; // Routing config with supported locales and default locale
 import { getMessages } from "@/lib/i18n/getMessages"; // Function to load locale message JSON files
+import { SpeedInsights } from "@vercel/speed-insights/next"; // Vercel Speed Insights
+import { Analytics } from "@vercel/analytics/next"; // Vercel Analytics
 
 /**
  * Generates the page metadata (like title and description) based on the locale parameter.
@@ -81,6 +83,10 @@ export default async function LocaleLayout({
             <Toaster />
           </NextIntlClientProvider>
         </ThemeProvider>
+
+        {/* Vercel analytics and performance monitoring */}
+        <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );
