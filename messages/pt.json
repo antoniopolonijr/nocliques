@@ -1,7 +1,7 @@
 {
   "Layout": {
-    "title": "NoCliques",
-    "description": "NoCliques é um aplicativo gerador de times desenvolvido para criar equipes justas e equilibradas em partidas casuais de futebol. Ao analisar as habilidades e posições dos jogadores, ele garante a imparcialidade e evita a formação de \"panelinhas\"."
+    "title": "Sorteador de Times de Futebol por Habilidade e Posição - NoCliques",
+    "description": "Sorteador de times de futebol. O NoCliques evita panelinhas analisando habilidades e posições para partidas mais justas e divertidas."
   },
 
   "Page": {
@@ -9,8 +9,8 @@
   },
 
   "TeamGenerator": {
-    "title": "NoCliques",
-    "description": "NoCliques é um aplicativo gerador de times desenvolvido para criar equipes justas e equilibradas em partidas casuais de futebol. Ao analisar as habilidades e posições dos jogadores, ele garante a imparcialidade e evita a formação de \"panelinhas\".",
+    "headline": "Sorteador de Times de Futebol por Habilidade e Posição",
+    "description": "Crie times equilibrados para futebol, futsal ou society. O NoCliques evita panelinhas analisando habilidades e posições para partidas mais justas e divertidas.",
     "inputSection": "Seção de Entrada",
     "outputSection": "Seção de Saída",
     "downloadGeneratedTeams": "Baixar Times Gerados",
@@ -21,8 +21,8 @@
     "share": "Compartilhar",
     "editPlayersAndTeams": "Editar Jogadores e Times",
     "edit": "Editar",
-    "generateTeams": "Gerar Times",
-    "generateNewTeams": "Gerar Novos Times",
+    "generateTeams": "Sortear Times",
+    "generateNewTeams": "Sortear Novos Times",
     "emptyToastDescription": "Por favor, adicione jogadores e times antes de gerar.",
     "CopyToastDescription": "Times Gerados copiados!",
     "CopyErrorToastDescription": "Falha ao copiar. Tente novamente.",
