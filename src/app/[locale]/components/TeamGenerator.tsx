@@ -265,6 +265,7 @@ export default function TeamGenerator() {
     >
       {/* Header */}
       <header className="flex flex-col p-6 sm:p-8 space-y-4 sm:space-y-6">
+        {/* Branding */}
         <h1
           id="team-generator-title"
           aria-label="NoCliques"
@@ -274,10 +275,16 @@ export default function TeamGenerator() {
           <Icon className="inline" iconNode={soccerBall} aria-hidden="true" />
           Cliques
         </h1>
+
+        {/* Main keyword for SEO */}
+        <h2 className="text-xl font-semibold text-center">{t("headline")}</h2>
+
+        {/* Description */}
         <p className="text-center max-w-prose mx-auto text-zinc-500 dark:text-zinc-400">
           {t("description")}
         </p>
       </header>
+
       <section id="main-section">
         {/* Input Section */}
         {!isGenerated && (
