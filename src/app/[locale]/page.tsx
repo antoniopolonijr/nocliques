@@ -15,7 +15,7 @@ export default function Home() {
 
   return (
     <div>
-      <main>
+      <main className="min-h-[600px]">
         <TeamGenerator />
       </main>
       <footer className="flex flex-col sm:flex-row justify-between items-center gap-4 py-4 sm:py-6 px-2 sm:px-6 bg-white text-zinc-500 dark:bg-zinc-950 dark:text-zinc-400 w-full mx-auto border-t border-zinc-200 dark:border-zinc-800 border-dashed">
